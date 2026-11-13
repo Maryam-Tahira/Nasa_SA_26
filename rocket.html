@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Rocket Lab — AstroQuest</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#050a18;--panel:rgba(8,14,30,0.94);--accent:#00d4ff;--accent2:#7b61ff;--warn:#ff6b35;--success:#00e676;--danger:#ff1744;--text:#e0e8f8;--dim:#7a8aaa;--border:rgba(0,212,255,0.12)}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+h1,h2,h3,h4{font-family:'Orbitron',sans-serif;font-weight:600}
+.nav{position:fixed;top:0;left:0;right:0;z-index:500;background:rgba(5,10,24,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0.6rem 1.2rem;display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap}
+.logo{font-family:'Orbitron';font-size:0.95rem;font-weight:700;color:var(--accent);letter-spacing:1px;text-decoration:none;flex-shrink:0}.logo span{color:var(--accent2)}
+.navr{display:flex;gap:0.25rem;margin-left:auto;flex-wrap:wrap}
+.nb{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);color:var(--dim);padding:0.25rem 0.55rem;border-radius:16px;cursor:pointer;font-size:0.63rem;font-family:'Inter';transition:all 0.3s;white-space:nowrap;text-decoration:none}
+.nb:hover,.nb.on{background:rgba(0,212,255,0.12);color:var(--accent);border-color:var(--accent)}
+.main{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:4.5rem 1.2rem 2rem}
+.stl{font-size:clamp(1.1rem,3vw,1.5rem);margin-bottom:1rem;text-align:center;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.bl{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem}
+@media(max-width:700px){.bl{grid-template-columns:1fr}}
+.pb{background:rgba(0,212,255,0.03);border:1px solid var(--border);border-radius:10px;padding:1rem}
+.pb h3{font-size:0.72rem;color:var(--accent);margin-bottom:0.6rem;font-family:'Orbitron'}
+.pi{display:flex;align-items:center;gap:0.5rem;padding:0.5rem;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:7px;margin-bottom:0.35rem;cursor:pointer;transition:all 0.2s}
+.pi:hover{border-color:var(--accent)}.pi.sel{border-color:var(--success);background:rgba(0,230,118,0.05)}
+.pi .ic{font-size:1.2rem}.pi h4{font-size:0.68rem}.pi p{font-size:0.58rem;color:var(--dim)}
+.pi .ck{margin-left:auto;color:var(--success);display:none}.pi.sel .ck{display:block}
+.dest-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:0.5rem;margin:0.8rem 0}
+.dest-card{background:rgba(0,212,255,0.04);border:1px solid var(--border);border-radius:9px;padding:0.7rem;text-align:center;cursor:pointer;transition:all 0.3s}
+.dest-card:hover{border-color:var(--accent);transform:scale(1.03)}
+.dest-card .de{font-size:2rem}.dest-card .dn{font-size:0.62rem;font-family:'Orbitron';margin-top:0.2rem}
+.dest-card .dt{font-size:0.5rem;color:var(--dim);margin-top:0.1rem}
+.rocket-stage{perspective:600px;margin:0.5rem 0}.rocket-3d{transform-style:preserve-3d;animation:rocketSpin 8s linear infinite;margin:0 auto;width:100px}
+@keyframes rocketSpin{0%{transform:rotateY(0)}100%{transform:rotateY(360deg)}}
+.r3d-part{position:relative;margin:0 auto;transition:all 0.4s;transform-style:preserve-3d}.r3d-part.empty{opacity:0.1;border:1px dashed rgba(255,255,255,0.1)}.r3d-part.filled{opacity:1}
+.r3d-capsule{width:40px;height:50px;margin:0 auto;background:linear-gradient(135deg,#d0d0d0,#888);border-radius:50% 50% 30% 30%;box-shadow:0 0 15px rgba(100,180,255,0.2)}
+.r3d-service{width:50px;height:30px;margin:0 auto;background:linear-gradient(135deg,#707070,#505050);border-radius:3px}
+.r3d-solar{width:90px;height:6px;margin:0 auto;background:linear-gradient(90deg,#1155aa,#2288ee,#1155aa);border-radius:2px;box-shadow:0 0 8px rgba(33,150,243,0.3)}
+.r3d-upper{width:46px;height:45px;margin:0 auto;background:linear-gradient(180deg,#555,#404040);border-radius:3px}
+.r3d-core{width:52px;height:70px;margin:0 auto;background:linear-gradient(180deg,#444,#333);border-radius:4px;position:relative}
+.r3d-booster-l,.r3d-booster-r{position:absolute;width:18px;height:55px;background:linear-gradient(180deg,#cc3333,#991111);border-radius:9px 9px 5px 5px;top:10px}
+.r3d-booster-l{left:-22px}.r3d-booster-r{right:-22px}
+.r3d-flame{width:12px;height:18px;margin:0 auto;background:linear-gradient(180deg,#ff6600,#ffcc00,transparent);border-radius:0 0 50% 50%;animation:flame 0.3s infinite alternate}
+.r3d-flame-b{width:8px;height:14px;background:linear-gradient(180deg,#ff4400,#ff8800,transparent);border-radius:0 0 50% 50%;animation:flame 0.2s infinite alternate;position:absolute;bottom:-14px;left:5px}
+@keyframes flame{0%{opacity:0.6;transform:scaleY(0.8)}100%{opacity:1;transform:scaleY(1.1)}}
+.r3d-lander{width:36px;height:28px;margin:4px auto 0;background:linear-gradient(135deg,#8888aa,#666680);border-radius:3px;position:relative}
+.r3d-leg{position:absolute;width:2px;height:16px;background:#888;bottom:-14px}.r3d-leg.l1{left:4px;transform:rotate(-15deg)}.r3d-leg.l2{right:4px;transform:rotate(15deg)}
+.r3d-label{font-size:0.5rem;color:var(--dim);text-align:center;margin-top:0.15rem;font-family:'Orbitron'}
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.7rem;margin:0.8rem 0}
+.cc{background:rgba(0,212,255,0.03);border:1px solid var(--border);border-radius:9px;padding:0.9rem;cursor:pointer;transition:all 0.3s}
+.cc:hover{border-color:var(--accent);transform:translateY(-2px)}.cc .ci{font-size:1.5rem;margin-bottom:0.4rem}
+.cc h3{font-size:0.75rem;margin-bottom:0.15rem}.cc p{font-size:0.68rem;color:var(--dim);line-height:1.5}
+.cc .ex{display:none;margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid var(--border);font-size:0.68rem;color:var(--dim);line-height:1.6}.cc.open .ex{display:block}
+.nsrc{font-size:0.5rem;color:var(--accent2);font-family:'Orbitron';letter-spacing:1px;margin-top:0.6rem}
+.footer{text-align:center;padding:2rem 1rem;border-top:1px solid var(--border);margin-top:2rem}
+.footer p{font-size:0.55rem;color:var(--dim);line-height:1.8}.footer a{color:var(--accent);text-decoration:none}
+.footer .fl{font-family:'Orbitron';color:var(--accent);font-size:0.6rem;letter-spacing:1px;margin-bottom:0.3rem}
+/* Journey overlay */
+.journey{position:fixed;inset:0;z-index:600;background:#000;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.journey.on{display:flex}
+.j-status{font-family:'Orbitron';font-size:0.85rem;color:var(--accent);margin-top:1.2rem;letter-spacing:2px;max-width:380px;line-height:1.7}
+.j-count{font-family:'Orbitron';font-size:3rem;color:var(--warn)}
+.j-warn{background:rgba(255,23,68,0.08);border:1px solid rgba(255,23,68,0.25);border-radius:10px;padding:1rem 1.2rem;margin-top:1.2rem;max-width:400px}
+.j-warn h3{color:var(--danger);font-size:0.8rem;margin-bottom:0.3rem}.j-warn p{font-size:0.72rem;color:var(--dim);line-height:1.6}
+.j-btn{padding:0.6rem 1.8rem;border:none;border-radius:7px;font-family:'Orbitron';font-size:0.7rem;cursor:pointer;margin:0.5rem;letter-spacing:1px}
+.j-btn.ok{background:var(--accent);color:#000}.j-btn.back{background:rgba(255,255,255,0.06);color:var(--text);border:1px solid var(--border)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.back-btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;background:rgba(0,212,255,0.08);border:1px solid var(--border);border-radius:20px;color:var(--accent);font-family:'Orbitron';font-size:0.62rem;cursor:pointer;margin-bottom:1rem;text-decoration:none;transition:all 0.3s}
+.back-btn:hover{background:rgba(0,212,255,0.15);border-color:var(--accent)}
+
+/* Subtle background graphics */
+.bg-deco{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bg-deco .bo{position:absolute;opacity:0.06;font-size:2rem;left:0;animation:bgDrift linear infinite;animation-fill-mode:backwards}
+@keyframes bgDrift{0%{transform:translateX(-8vw) translateY(0) rotate(0)}100%{transform:translateX(108vw) translateY(-20px) rotate(360deg)}}
+@keyframes bgDriftR{0%{transform:translateX(108vw) translateY(0) rotate(0)}100%{transform:translateX(-8vw) translateY(15px) rotate(-360deg)}}
+.bg-star{position:absolute;background:#fff;border-radius:50%;opacity:0.15;animation:twk linear infinite}
+@keyframes twk{0%,100%{opacity:0.05}50%{opacity:0.25}}
+</style>
+<link rel="stylesheet" href="css/aq.css" />
+<link rel="stylesheet" href="css/chatbot.css" />
+</head>
+<body>
+<script src="js/seed-data.js"></script><script src="js/mock-api.js"></script><script src="js/aq-common.js"></script>
+<div class="bg-deco" id="bgDeco">
+<div class="bo" style="top:15%;animation:bgDrift 50s linear infinite;animation-delay:-5s">🚀</div>
+<div class="bo" style="top:60%;animation:bgDriftR 65s linear infinite;animation-delay:-30s">🛰️</div>
+<div class="bo" style="top:35%;animation:bgDrift 70s linear infinite;animation-delay:-45s">🪐</div>
+<div class="bo" style="top:80%;animation:bgDriftR 55s linear infinite;animation-delay:-15s">☄️</div>
+<div class="bo" style="top:25%;animation:bgDrift 80s linear infinite;animation-delay:-60s">🌙</div>
+<div class="bo" style="top:70%;animation:bgDriftR 75s linear infinite;animation-delay:-20s">⭐</div>
+</div>
+<script>(function(){var d=document.getElementById('bgDeco');if(!d)return;for(var i=0;i<60;i++){var s=document.createElement('div');s.className='bg-star';var sz=Math.random()*2+0.5;s.style.width=sz+'px';s.style.height=sz+'px';s.style.top=Math.random()*100+'%';s.style.left=Math.random()*100+'%';s.style.animationDuration=(2+Math.random()*4)+'s';s.style.animationDelay=Math.random()*3+'s';d.appendChild(s)}})();</script>
+
+<nav class="nav"><a href="index.html" class="logo">Astro<span>Quest</span></a>
+<div class="navr"><a href="explore.html" class="nb">Solar System</a><a href="deepspace.html" class="nb">Deep Space</a><a href="rocket.html" class="nb on">Rocket Lab</a><a href="budget.html" class="nb">Budget</a>
+<a href="nasa-live.html" class="nb">NASA Live</a><a href="quiz.html" class="nb">Quiz</a><a href="research.html" class="nb">Research</a><a href="library.html" class="nb">Library</a><a href="datasets.html" class="nb">Datasets</a><span id="aqNavAuth"></span></div></nav>
+
+<div class="journey" id="journey"></div>
+
+<div class="main">
+<a href="javascript:history.back()" class="back-btn">← Back</a>
+<h2 class="stl">🚀 Rocket Lab — Build & Launch</h2>
+<p style="text-align:center;color:var(--dim);font-size:0.78rem;margin-bottom:0.5rem">Select all required components, then choose your destination!</p>
+<div class="bl"><div class="pb"><h3>Components</h3><div id="pList"></div></div>
+<div class="pb"><h3>Your Rocket</h3><div id="rVis" style="text-align:center;margin:0.4rem 0"></div><div id="rStats"></div>
+<div id="rReady" style="text-align:center;font-size:0.6rem;color:var(--dim);margin:0.3rem 0"></div>
+<h3 style="margin-top:0.8rem">🎯 Choose Destination</h3><div class="dest-grid" id="destGrid"></div></div></div>
+
+<h3 style="font-size:0.8rem;color:var(--accent);margin:2rem 0 0.8rem;font-family:'Orbitron';text-align:center">🏗️ NASA Rocket History & Current Programs</h3>
+<div class="cg">
+  <div class="cc" onclick="this.classList.toggle('open')"><div class="ci">🚀</div><h3>Saturn V (1967-1973)</h3><p>Apollo Moon missions · 13 launches</p><div class="ex">110.6m tall. Most powerful until SLS. Carried 12 humans to Moon. 7.5M lbs thrust. ~$1.16B per launch (today).</div></div>
+  <div class="cc" onclick="this.classList.toggle('open')"><div class="ci">🛸</div><h3>Space Shuttle (1981-2011)</h3><p>135 missions · Built the ISS</p><div class="ex">First reusable craft. 5 orbiters. Built ISS, serviced Hubble. 355 people to space. Columbia & Challenger lost.</div></div>
+  <div class="cc" onclick="this.classList.toggle('open')"><div class="ci">🔥</div><h3 style="color:var(--success)">SLS (Active)</h3><p>Artemis program · Most powerful flying</p><div class="ex">98m, 8.8M lbs thrust. Artemis I done Nov 2022. Artemis II (crewed flyby) & III (landing) upcoming. RS-25 engines.</div></div>
+  <div class="cc" onclick="this.classList.toggle('open')"><div class="ci">🏗️</div><h3 style="color:var(--warn)">Artemis IV+ (Building)</h3><p>Block 2 SLS · Deep space</p><div class="ex">Will be most powerful ever. EUS in development. Will launch Gateway modules and support Mars missions.</div></div>
+  <div class="cc" onclick="this.classList.toggle('open')"><div class="ci">⚡</div><h3>SpaceX Falcon 9/Heavy</h3><p>NASA's crew launcher · 300+ launches</p><div class="ex">70m, reusable. 200+ landings. Carries astronauts via Crew Dragon. Starship selected as Artemis lander.</div></div>
+  <div class="cc" onclick="this.classList.toggle('open')"><div class="ci">🌟</div><h3 style="color:var(--warn)">Starship (Testing)</h3><p>121m · Full reusability · Mars capable</p><div class="ex">Tallest ever. 16.7M lbs thrust (2× Saturn V). Both stages reusable. Artemis HLS lander. Goal: multiplanetary.</div></div>
+</div>
+<div style="text-align:center"><p class="nsrc">Data: NASA Launch Services Program</p></div>
+
+<div class="footer"><div class="fl">AstroQuest · Team Astro_W1</div><p>NASA Space Apps Challenge 2026 · Chittagong, Bangladesh<br>
+<a href="https://nasa.gov/artemis" target="_blank">Artemis</a> · <a href="https://nasa.gov/launchservices" target="_blank">Launch Services</a></p></div>
+</div>
+
+<script>
+let Pdata={},rp=[];
+async function aqBoot(){
+  try{
+    const [pl,rk]=await Promise.all(['/api/planets','/api/rocket-parts'].map(u=>aqFetch(u).then(r=>r.json())));
+    pl.forEach(p=>{Pdata[p.name]={e:p.emoji,tr:p.travelStatus,note:p.travelNote,reqs:p.requirements||[]}});
+    rp=rk.map(p=>({id:p.code,n:p.name,ic:p.icon,d:p.description,rq:p.isRequired?1:0,w:p.weightKg,on:0}));
+    buildUI();
+  }catch(e){console.error(e);document.getElementById('pList').innerHTML='<p style="color:var(--danger);font-size:0.7rem">Could not load rocket parts from the server.</p>'}
+}
+
+function buildUI(){
+  document.getElementById('pList').innerHTML=rp.map((p,i)=>`<div class="pi ${p.on?'sel':''}" onclick="tp(${i})" id="rp${i}"><div class="ic">${p.ic}</div><div><h4>${p.n} ${p.rq?'<span style="color:var(--danger);font-size:0.5rem">REQ</span>':''}</h4><p>${p.d} · ${(p.w/1000).toFixed(1)}t</p></div><div class="ck">✓</div></div>`).join('');
+  const ti={Moon:'3d',Mars:'7mo',Mercury:'6mo',Venus:'4mo',Jupiter:'6yr',Saturn:'7yr',Uranus:'15yr',Neptune:'12yr'};
+  const tc={Moon:'var(--success)',Mars:'var(--warn)',Mercury:'var(--danger)',Venus:'var(--danger)',Jupiter:'var(--danger)',Saturn:'var(--danger)',Uranus:'var(--danger)',Neptune:'var(--danger)'};
+  document.getElementById('destGrid').innerHTML=['Moon','Mars','Mercury','Venus','Jupiter','Saturn','Uranus','Neptune'].map(n=>{
+    const d=Pdata[n];return`<div class="dest-card" onclick="launchTo('${n}')"><div class="de">${d.e}</div><div class="dn">${n}</div><div class="dt">🕐 ${ti[n]}</div><div class="dt" style="color:${tc[n]}">${d.tr==='yes'?'✓ Go':d.tr==='future'?'◐ Future':'✕ Risky'}</div></div>`}).join('');updR()}
+function tp(i){rp[i].on=!rp[i].on;document.getElementById('rp'+i).classList.toggle('sel');updR()}
+function updR(){const sel=rp.filter(p=>p.on),tw=sel.reduce((a,p)=>a+p.w,0),ok=rp.filter(p=>p.rq).every(p=>p.on);
+  const v=document.getElementById('rVis'),h=id=>rp.find(p=>p.id===id)?.on;
+  let r=`<div class="rocket-stage"><div class="rocket-3d">`;
+  r+=h('com')?`<div style="text-align:center;margin-bottom:2px"><div style="width:8px;height:8px;border:1.5px solid var(--accent);border-radius:50%;margin:0 auto"></div></div>`:'';
+  r+=`<div class="r3d-part ${h('cap')?'filled':'empty'}"><div class="r3d-capsule"></div><div class="r3d-label">Capsule</div></div>`;
+  r+=`<div class="r3d-part ${h('svc')?'filled':'empty'}"><div class="r3d-service"></div>${h('sol')?'<div class="r3d-solar"></div>':''}<div class="r3d-label">Service</div></div>`;
+  r+=`<div class="r3d-part ${h('s2')?'filled':'empty'}"><div class="r3d-upper"></div><div class="r3d-label">Upper</div></div>`;
+  r+=`<div class="r3d-part ${h('s1')?'filled':'empty'}"><div class="r3d-core">${h('bst')?'<div class="r3d-booster-l"><div class="r3d-flame-b"></div></div><div class="r3d-booster-r"><div class="r3d-flame-b"></div></div>':''}</div>${ok?'<div class="r3d-flame"></div>':''}<div class="r3d-label">Core${h('bst')?' + Boosters':''}</div></div>`;
+  r+=`<div class="r3d-part ${h('lndr')?'filled':'empty'}"><div class="r3d-lander"><div class="r3d-leg l1"></div><div class="r3d-leg l2"></div></div><div class="r3d-label">Lander</div></div></div></div>`;
+  if(!sel.length)r='<div style="text-align:center;padding:3rem 0;color:var(--dim);font-size:0.7rem">Select components</div>';
+  v.innerHTML=r;
+  document.getElementById('rStats').innerHTML=`<div style="font-size:0.6rem;margin-top:0.5rem"><div style="display:flex;justify-content:space-between;padding:0.15rem 0;border-bottom:1px solid var(--border)"><span>Mass</span><span style="color:var(--accent);font-family:Orbitron;font-size:0.55rem">${(tw/1000).toFixed(1)}t</span></div><div style="display:flex;justify-content:space-between;padding:0.15rem 0"><span>Parts</span><span style="color:var(--accent);font-family:Orbitron;font-size:0.55rem">${sel.length}/${rp.length}</span></div></div>`;
+  document.getElementById('rReady').innerHTML=ok?'<span style="color:var(--success)">✓ All systems go!</span>':`<span style="color:var(--danger)">Need: ${rp.filter(p=>p.rq&&!p.on).map(p=>p.n).join(', ')}</span>`}
+/* The server validates the build and the destination (and saves the launch for logged-in users). */
+async function launchTo(dest){
+  const parts=rp.filter(p=>p.on).map(p=>p.id);
+  if(!rp.filter(p=>p.rq).every(p=>p.on)){aqToast('Select every REQ component before launching');return}
+  let res;
+  try{
+    const r=await fetch('/api/rocket/launch',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({parts,destination:dest})});
+    res=await r.json();
+    if(!r.ok){aqToast(res.error||'Launch rejected by Mission Control');return}
+  }catch(e){aqToast('Could not reach Mission Control');return}
+  const d={e:Pdata[dest].e,tr:res.outcome==='landed'?'yes':res.outcome==='future'?'future':'no',note:res.message,reqs:res.requirements||[]};
+  if(res.saved)aqToast(`🚀 Launch saved · ${(res.totalMassKg/1000).toFixed(1)} t`+(res.xpEarned?` · +${res.xpEarned} XP`:'')+` · ${res.rank}`);
+  else aqToast('Log in to save your launches, earn XP and badges');
+  aqBadges(res.newBadges);
+  runJourney(dest,d);
+}
+function runJourney(dest,d){const j=document.getElementById('journey');j.classList.add('on');let step=0;
+  function show(){if(step===0){j.innerHTML=`<div class="j-count" id="jc">5</div><div style="font-size:3.5rem;animation:float 2s ease-in-out infinite">🚀</div><div class="j-status">LAUNCH SEQUENCE</div>`;
+    let c2=5;const ti2=setInterval(()=>{c2--;const ce=document.getElementById('jc');if(!ce){clearInterval(ti2);return}if(c2>0)ce.textContent=c2;else if(c2===0){ce.textContent='🔥';j.querySelector('.j-status').textContent='LIFTOFF!'}else{clearInterval(ti2);step++;show()}},700)}
+  else if(step===1){j.innerHTML=`<div style="font-size:3rem;animation:float 1.5s ease-in-out infinite">🚀</div><div class="j-status">LEAVING ATMOSPHERE</div>`;setTimeout(()=>{step++;show()},2000)}
+  else if(step===2){j.innerHTML=`<div style="font-size:3rem;animation:float 1.5s ease-in-out infinite">🚀</div><div class="j-status">TRANS-${dest.toUpperCase()} INJECTION</div>`;setTimeout(()=>{step++;show()},2000)}
+  else if(step===3){if(d.tr==='yes'){j.innerHTML=`<div style="font-size:3rem;transform:rotate(180deg)">🚀</div><div class="j-status">DESCENT TO ${dest.toUpperCase()}</div>`;
+    setTimeout(()=>{j.innerHTML=`<div style="font-size:4.5rem">${d.e}</div><div class="j-status" style="color:var(--success)">✓ LANDING SUCCESSFUL!</div><p style="font-size:0.75rem;color:var(--dim);margin-top:0.4rem">Welcome to ${dest}! Opening the landing site…</p>`;setTimeout(()=>aqGo('landing.html?planet='+encodeURIComponent(dest)+'&result=landed'),1600)},2000)}
+  else{const isF=d.tr==='future';j.innerHTML=`<div style="font-size:4.5rem">${d.e}</div><div class="j-warn" style="${isF?'border-color:rgba(255,107,53,0.25);background:rgba(255,107,53,0.06)':''}"><h3 style="${isF?'color:var(--warn)':''}">${isF?'⚠️ Future Target':'⚠️ Cannot Land'}</h3><p>${d.note}<br><br>${d.reqs.map(r2=>'• '+r2).join('<br>')}</p></div><div style="margin-top:1rem"><button class="j-btn ok" onclick="aqGo('landing.html?planet='+encodeURIComponent('${dest}')+'&result=${d.tr==='future'?'future':'unsafe'}')">See what happens →</button><button class="j-btn back" onclick="document.getElementById('journey').classList.remove('on')">Back</button></div>`;setTimeout(()=>{if(j.classList.contains('on'))aqGo('landing.html?planet='+encodeURIComponent(dest)+'&result='+(d.tr==='future'?'future':'unsafe'))},4500)}}}show()}
+aqBoot();
+</script>
+<script src="js/chatbot.js"></script>
+</body>
+</html>

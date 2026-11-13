@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Register — AstroQuest</title>
+<link rel="stylesheet" href="css/site.css"><link rel="stylesheet" href="css/account.css"><link rel="stylesheet" href="css/aq.css"><link rel="stylesheet" href="css/chatbot.css">
+<style>.acct-body{display:block}.acct-card input[type=checkbox]{width:auto;padding:0}.lb-table{font-size:0.74rem}</style>
+</head><body class="acct-body">
+<script src="js/seed-data.js"></script><script src="js/mock-api.js"></script><script src="js/aq-common.js"></script>
+<header class="acct-header"><a class="logo" href="index.html" style="font-family:Orbitron;color:var(--accent);text-decoration:none;font-size:1rem;letter-spacing:2px">Astro<span style="color:var(--accent2)">Quest</span></a>
+<nav class="acct-nav" aria-label="Account" id="acctNav"><a href="index.html">← Back to Space</a></nav></header>
+<main class="acct-main"><div class="acct-stack"><div class="acct-card">
+<h1>Join the Crew</h1><p class="acct-sub">Start as a Cadet. Earn XP to become a Pilot, then a Commander.</p>
+<form id="f"><div class="acct-error" id="err"></div>
+<label for="name">Astronaut name</label><input id="name" autocomplete="nickname" autofocus required maxlength="50">
+<label for="email">Email</label><input id="email" type="email" autocomplete="email" required>
+<label for="pw">Password</label><input id="pw" type="password" autocomplete="new-password" required>
+<label for="pw2">Confirm password</label><input id="pw2" type="password" autocomplete="new-password" required>
+<button type="submit" class="acct-btn">Create account</button></form>
+<p class="acct-alt">Already a crew member? <a href="login.html">Login</a></p></div></div></main>
+<script>(function(){if(AQ.auth&&AQ.admin){document.getElementById('acctNav').insertAdjacentHTML('afterbegin','<a href="'+aqHref('admin.html')+'">Mission Control</a><a href="'+aqHref('admin.html')+'#users">Users</a><a href="'+aqHref('admin.html')+'#questions">Quiz questions</a>')}})();</script>
+<script>document.getElementById('f').onsubmit=function(e){e.preventDefault();var g=function(i){return document.getElementById(i).value};
+var err=AQMock.register(g('name'),g('email'),g('pw'),g('pw2'));if(err){document.getElementById('err').textContent=err;return}aqGo('index.html')};</script>
+<script src="js/chatbot.js"></script>
+</body></html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mission Budget Planner — AstroQuest</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#050a18;--accent:#00d4ff;--accent2:#7b61ff;--success:#00e676;--warn:#ffb300;--danger:#ff5252;--text:#e0e8f8;--dim:#7a8aaa;--border:rgba(0,212,255,0.12)}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+h1,h2,h3{font-family:'Orbitron',sans-serif;font-weight:600}
+.nav{position:fixed;top:0;left:0;right:0;z-index:500;background:rgba(5,10,24,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0.6rem 1.2rem;display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap}
+.logo{font-family:'Orbitron';font-size:0.95rem;font-weight:700;color:var(--accent);text-decoration:none}.logo span{color:var(--accent2)}
+.navr{display:flex;gap:0.25rem;margin-left:auto;flex-wrap:wrap}
+.nb{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);color:var(--dim);padding:0.25rem 0.55rem;border-radius:16px;font-size:0.63rem;font-family:'Inter';transition:all 0.3s;text-decoration:none}
+.nb:hover,.nb.on{background:rgba(0,212,255,0.12);color:var(--accent);border-color:var(--accent)}
+.main{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:4.5rem 1.2rem 2rem}
+.stl{font-size:1.3rem;margin-bottom:0.4rem;text-align:center;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{text-align:center;color:var(--dim);font-size:0.78rem;margin-bottom:1.2rem}
+.back-btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;background:rgba(0,212,255,0.08);border:1px solid var(--border);border-radius:20px;color:var(--accent);font-family:'Orbitron';font-size:0.62rem;cursor:pointer;margin-bottom:1rem;text-decoration:none}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+.box{background:rgba(0,212,255,0.03);border:1px solid var(--border);border-radius:12px;padding:1rem}
+.box h3{font-size:0.72rem;color:var(--accent);letter-spacing:1px;margin-bottom:0.7rem}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:0.5rem;margin-bottom:0.9rem}
+.opt{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:0.6rem;cursor:pointer;text-align:center;transition:all 0.2s}
+.opt:hover{border-color:var(--accent)}
+.opt.sel{border-color:var(--accent);background:rgba(0,212,255,0.12)}
+.opt .e{font-size:1.4rem}.opt .n{font-size:0.7rem;font-weight:600;margin-top:0.15rem}.opt .d{font-size:0.56rem;color:var(--dim);margin-top:0.1rem;line-height:1.35}
+.vlist{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:0.9rem}
+.vopt{text-align:left;display:flex;justify-content:space-between;gap:0.6rem;align-items:center}
+.vopt .d{max-width:60%}
+.fld{margin-bottom:0.8rem}
+.fld label{display:flex;justify-content:space-between;font-size:0.66rem;color:var(--dim);margin-bottom:0.25rem}
+.fld label b{color:var(--accent);font-family:'Orbitron';font-size:0.66rem}
+.fld input[type=range]{width:100%;accent-color:var(--accent)}
+.fld input[type=number]{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:0.45rem 0.6rem;font-size:0.8rem}
+.go{width:100%;padding:0.7rem;border:none;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#05101f;font-family:'Orbitron';font-weight:700;font-size:0.74rem;cursor:pointer}
+.go:disabled{opacity:0.5;cursor:default}
+.verdict{text-align:center;padding:0.8rem;border-radius:10px;margin-bottom:0.8rem;border:1px solid var(--border)}
+.verdict .v{font-family:'Orbitron';font-size:1rem}
+.verdict .s{font-size:0.62rem;color:var(--dim);margin-top:0.2rem}
+.verdict.ok{background:rgba(0,230,118,0.08);border-color:rgba(0,230,118,0.3)}.verdict.ok .v{color:var(--success)}
+.verdict.risk{background:rgba(255,179,0,0.08);border-color:rgba(255,179,0,0.3)}.verdict.risk .v{color:var(--warn)}
+.verdict.bad{background:rgba(255,82,82,0.08);border-color:rgba(255,82,82,0.3)}.verdict.bad .v{color:var(--danger)}
+.row{display:flex;justify-content:space-between;gap:0.6rem;font-size:0.72rem;padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.row span:last-child{font-family:'Orbitron';font-size:0.66rem;white-space:nowrap}
+.row.tot{border-bottom:none;font-weight:700;color:var(--accent);padding-top:0.6rem}
+.bar{height:8px;border-radius:6px;background:rgba(255,255,255,0.06);overflow:hidden;margin:0.5rem 0 0.2rem}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.mini{font-size:0.6rem;color:var(--dim)}
+.tips{margin-top:0.8rem;font-size:0.68rem;line-height:1.5;color:var(--dim);list-style:none}
+.tips li{padding:0.35rem 0.6rem;border-left:2px solid var(--warn);background:rgba(255,179,0,0.05);margin-bottom:0.3rem;border-radius:0 6px 6px 0}
+.alts{margin-top:0.8rem}
+.alts h4{font-size:0.62rem;color:var(--accent);font-family:'Orbitron';margin-bottom:0.3rem}
+.alt.no{opacity:0.45}
+.footer{text-align:center;padding:2rem 1rem;border-top:1px solid var(--border);margin-top:2rem}
+.footer p{font-size:0.55rem;color:var(--dim);line-height:1.8}
+.bg-deco{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bg-star{position:absolute;background:#fff;border-radius:50%;opacity:0.15;animation:twk linear infinite}
+@keyframes twk{0%,100%{opacity:0.05}50%{opacity:0.25}}
+</style>
+<link rel="stylesheet" href="css/aq.css" />
+<link rel="stylesheet" href="css/chatbot.css" />
+</head><body>
+<script src="js/seed-data.js"></script><script src="js/mock-api.js"></script><script src="js/aq-common.js"></script>
+<div class="bg-deco" id="bgDeco"></div>
+<script>(function(){var d=document.getElementById('bgDeco');if(!d)return;for(var i=0;i<60;i++){var s=document.createElement('div');s.className='bg-star';var z=Math.random()*2+0.5;s.style.width=z+'px';s.style.height=z+'px';s.style.top=Math.random()*100+'%';s.style.left=Math.random()*100+'%';s.style.animationDuration=(3+Math.random()*5)+'s';d.appendChild(s)}})()</script>
+
+<nav class="nav"><a href="index.html" class="logo">Astro<span>Quest</span></a>
+<div class="navr"><a href="explore.html" class="nb">Solar System</a><a href="deepspace.html" class="nb">Deep Space</a><a href="rocket.html" class="nb">Rocket Lab</a><a href="budget.html" class="nb on">Budget</a>
+<a href="nasa-live.html" class="nb">NASA Live</a><a href="quiz.html" class="nb">Quiz</a><a href="research.html" class="nb">Research</a><a href="library.html" class="nb">Library</a><a href="datasets.html" class="nb">Datasets</a><span id="aqNavAuth"></span></div></nav>
+
+<div class="main">
+<a href="javascript:history.back()" class="back-btn">← Back</a>
+<h2 class="stl">💰 Mission Budget Planner</h2>
+<p class="sub">Pick a destination and a launch vehicle, set crew and duration, and see if your mission fits the budget.</p>
+
+<div class="grid">
+<div class="box">
+<h3>🎯 DESTINATION</h3><div class="dgrid" id="destGrid"></div>
+<h3>🚀 LAUNCH VEHICLE</h3><div class="vlist" id="vehList"></div>
+<h3>⚙️ MISSION</h3>
+<div class="fld"><label>Crew <b id="crewV">3</b></label><input type="range" id="crew" min="0" max="8" value="3"></div>
+<div class="fld"><label>Mission length (days) <b id="daysV">30</b></label><input type="range" id="days" min="1" max="1100" value="30"></div>
+<div class="fld"><label>Payload (kg) <b id="payV">5000</b></label><input type="range" id="pay" min="100" max="60000" step="100" value="5000"></div>
+<div class="fld"><label>Contingency reserve <b id="conV">20%</b></label><input type="range" id="con" min="0" max="60" value="20"></div>
+<div class="fld"><label>Your budget (USD)</label><input type="number" id="bud" min="0" step="1000000" value="2000000000"></div>
+<button class="go" id="goBtn" disabled>CALCULATE PLAN</button>
+</div>
+
+<div class="box" id="out"><h3>📊 RESULT</h3><p class="mini" id="hint">Choose options and press Calculate.</p></div>
+</div>
+
+<div class="footer"><p>AstroQuest · Team Astro_W1 · NASA Space Apps 2026 · Chittagong, Bangladesh<br>Figures are simplified educational estimates, not real mission quotes.</p></div>
+</div>
+
+<script>
+const S={dest:null,veh:null};
+const $=id=>document.getElementById(id);
+const usd=n=>{const a=Math.abs(n),s=n<0?'-':'';if(a>=1e9)return s+'$'+(a/1e9).toFixed(2)+'B';if(a>=1e6)return s+'$'+(a/1e6).toFixed(1)+'M';return s+'$'+Math.round(a).toLocaleString()};
+[['crew','crewV',''],['days','daysV',''],['pay','payV',''],['con','conV','%']].forEach(([i,o,u])=>{$(i).addEventListener('input',()=>{$(o).textContent=Number($(i).value).toLocaleString()+u})});
+
+function pick(listId,key,code){S[key]=code;document.querySelectorAll('#'+listId+' .opt').forEach(e=>e.classList.toggle('sel',e.dataset.c===code));$('goBtn').disabled=!(S.dest&&S.veh)}
+
+async function init(){
+  try{
+    const o=await aqFetch('/api/budget/options').then(r=>r.json());
+    $('destGrid').innerHTML=o.destinations.map(d=>`<div class="opt" data-c="${esc(d.code)}"><div class="e">${d.emoji}</div><div class="n">${esc(d.name)}</div><div class="d">${esc(d.note)}</div></div>`).join('');
+    $('vehList').innerHTML=o.vehicles.map(v=>`<div class="opt vopt" data-c="${esc(v.code)}"><div><div class="n">${esc(v.name)}</div><div class="mini">${v.leoCapacityKg.toLocaleString()} kg to LEO · $${v.usdPerKgLeo.toLocaleString()}/kg</div></div><div class="d">${esc(v.note)}</div></div>`).join('');
+    $('destGrid').querySelectorAll('.opt').forEach(e=>e.onclick=()=>pick('destGrid','dest',e.dataset.c));
+    $('vehList').querySelectorAll('.opt').forEach(e=>e.onclick=()=>pick('vehList','veh',e.dataset.c));
+    pick('destGrid','dest',o.destinations.find(d=>d.code==='moon').code);
+    pick('vehList','veh',o.vehicles[1].code);
+  }catch(e){aqFatal('Could not load budget options.')}
+}
+
+async function calc(){
+  $('goBtn').disabled=true;
+  try{
+    const body={destination:S.dest,vehicle:S.veh,crew:+$('crew').value,missionDays:+$('days').value,payloadKg:+$('pay').value,contingencyPercent:+$('con').value,budgetUsd:Math.max(0,Math.round(+$('bud').value||0))};
+    const r=await aqPost('/api/budget/plan',body).then(x=>x.json());
+    render(r);
+  }catch(e){aqToast('Could not calculate the plan')}
+  $('goBtn').disabled=false;
+}
+
+function render(r){
+  const cls=r.verdict==='Mission approved'?'ok':(r.verdict==='Approved with risk'||r.verdict==='Estimate only')?'risk':'bad';
+  const pct=r.budgetUsd>0?Math.min(100,Math.round(r.totalUsd/r.budgetUsd*100)):100;
+  const lines=r.lines.map(l=>`<div class="row"><span>${esc(l.label)}</span><span>${usd(l.usd)}</span></div>`).join('');
+  const alts=r.alternatives.map(a=>`<div class="row alt ${a.fits?'':'no'}"><span>${esc(a.name)}${a.fits?'':' (too small)'}</span><span>${usd(a.totalUsd)}</span></div>`).join('');
+  const tips=r.tips.length?`<ul class="tips">${r.tips.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>`:'';
+  $('out').innerHTML=`<h3>📊 RESULT</h3>
+  <div class="verdict ${cls}"><div class="v">${esc(r.verdict)}</div><div class="s">Plan score ${r.score}/100 · ${esc(r.destination)} · ${esc(r.vehicle)}</div></div>
+  ${lines}<div class="row tot"><span>Total estimate</span><span>${usd(r.totalUsd)}</span></div>
+  <div class="bar"><i style="width:${pct}%"></i></div>
+  <div class="mini">${r.budgetUsd>0?`Budget ${usd(r.budgetUsd)} · ${r.withinBudget?'margin':'over by'} ${usd(Math.abs(r.marginUsd))}`:'No budget entered'}</div>
+  <div class="mini" style="margin-top:0.4rem">Mass ${r.totalMassKg.toLocaleString()} kg · launch mass ${r.launchMassKg.toLocaleString()} kg · capacity ${r.capacityKg.toLocaleString()} kg</div>
+  ${tips}<div class="alts"><h4>SAME MISSION, OTHER VEHICLES</h4>${alts}</div>`;
+}
+
+$('goBtn').onclick=calc;
+init();
+</script>
+<script src="js/chatbot.js"></script>
+</body></html>

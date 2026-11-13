@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>NASA Datasets — AstroQuest</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#050a18;--accent:#00d4ff;--accent2:#7b61ff;--success:#00e676;--text:#e0e8f8;--dim:#7a8aaa;--border:rgba(0,212,255,0.12)}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+h1,h2,h3{font-family:'Orbitron',sans-serif;font-weight:600}
+.nav{position:fixed;top:0;left:0;right:0;z-index:500;background:rgba(5,10,24,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0.6rem 1.2rem;display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap}
+.logo{font-family:'Orbitron';font-size:0.95rem;font-weight:700;color:var(--accent);text-decoration:none}.logo span{color:var(--accent2)}
+.navr{display:flex;gap:0.25rem;margin-left:auto;flex-wrap:wrap}
+.nb{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);color:var(--dim);padding:0.25rem 0.55rem;border-radius:16px;font-size:0.63rem;font-family:'Inter';transition:all 0.3s;text-decoration:none}
+.nb:hover,.nb.on{background:rgba(0,212,255,0.12);color:var(--accent);border-color:var(--accent)}
+.main{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:4.5rem 1.2rem 2rem}
+.back-btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;background:rgba(0,212,255,0.08);border:1px solid var(--border);border-radius:20px;color:var(--accent);font-family:'Orbitron';font-size:0.62rem;cursor:pointer;margin-bottom:1rem;text-decoration:none;transition:all 0.3s}
+.back-btn:hover{background:rgba(0,212,255,0.15);border-color:var(--accent)}
+.stl{font-size:1.3rem;margin-bottom:0.3rem;text-align:center;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.cat{font-size:0.68rem;color:var(--accent);font-family:'Orbitron';margin:1.2rem 0 0.5rem;letter-spacing:1px}
+.ds{background:rgba(0,212,255,0.03);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:0.6rem;cursor:pointer;transition:all 0.3s;text-decoration:none;color:inherit;display:block}
+.ds:hover{border-color:var(--accent);transform:translateY(-2px)}
+.ds h4{font-size:0.78rem;margin-bottom:0.2rem;display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap}
+.tag{font-size:0.48rem;padding:0.1rem 0.35rem;border-radius:10px;font-family:'Orbitron';letter-spacing:0.5px}
+.tag.free{background:rgba(0,230,118,0.1);color:var(--success);border:1px solid rgba(0,230,118,0.2)}
+.tag.api{background:rgba(0,212,255,0.1);color:var(--accent);border:1px solid rgba(0,212,255,0.2)}
+.ds p{font-size:0.67rem;color:var(--dim);line-height:1.5;margin-top:0.2rem}
+.ds .dl{font-size:0.55rem;color:var(--accent2);font-family:'Orbitron';margin-top:0.25rem}
+.footer{text-align:center;padding:2rem 1rem;border-top:1px solid var(--border);margin-top:2rem}
+.footer p{font-size:0.55rem;color:var(--dim);line-height:1.8}.footer a{color:var(--accent);text-decoration:none}
+
+/* Subtle background graphics */
+.bg-deco{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bg-deco .bo{position:absolute;opacity:0.06;font-size:2rem;left:0;animation:bgDrift linear infinite;animation-fill-mode:backwards}
+@keyframes bgDrift{0%{transform:translateX(-8vw) translateY(0) rotate(0)}100%{transform:translateX(108vw) translateY(-20px) rotate(360deg)}}
+@keyframes bgDriftR{0%{transform:translateX(108vw) translateY(0) rotate(0)}100%{transform:translateX(-8vw) translateY(15px) rotate(-360deg)}}
+.bg-star{position:absolute;background:#fff;border-radius:50%;opacity:0.15;animation:twk linear infinite}
+@keyframes twk{0%,100%{opacity:0.05}50%{opacity:0.25}}
+</style><link rel="stylesheet" href="css/aq.css" />
+<link rel="stylesheet" href="css/chatbot.css" />
+</head><body>
+<script src="js/seed-data.js"></script><script src="js/mock-api.js"></script><script src="js/aq-common.js"></script>
+<div class="bg-deco" id="bgDeco">
+<div class="bo" style="top:15%;animation:bgDrift 50s linear infinite;animation-delay:-5s">🚀</div>
+<div class="bo" style="top:60%;animation:bgDriftR 65s linear infinite;animation-delay:-30s">🛰️</div>
+<div class="bo" style="top:35%;animation:bgDrift 70s linear infinite;animation-delay:-45s">🪐</div>
+<div class="bo" style="top:80%;animation:bgDriftR 55s linear infinite;animation-delay:-15s">☄️</div>
+<div class="bo" style="top:25%;animation:bgDrift 80s linear infinite;animation-delay:-60s">🌙</div>
+<div class="bo" style="top:70%;animation:bgDriftR 75s linear infinite;animation-delay:-20s">⭐</div>
+</div>
+<script>(function(){var d=document.getElementById('bgDeco');if(!d)return;for(var i=0;i<60;i++){var s=document.createElement('div');s.className='bg-star';var sz=Math.random()*2+0.5;s.style.width=sz+'px';s.style.height=sz+'px';s.style.top=Math.random()*100+'%';s.style.left=Math.random()*100+'%';s.style.animationDuration=(2+Math.random()*4)+'s';s.style.animationDelay=Math.random()*3+'s';d.appendChild(s)}})();</script>
+
+<nav class="nav"><a href="index.html" class="logo">Astro<span>Quest</span></a>
+<div class="navr"><a href="explore.html" class="nb">Solar System</a><a href="deepspace.html" class="nb">Deep Space</a><a href="rocket.html" class="nb">Rocket Lab</a><a href="budget.html" class="nb">Budget</a>
+<a href="nasa-live.html" class="nb">NASA Live</a><a href="quiz.html" class="nb">Quiz</a><a href="research.html" class="nb">Research</a><a href="library.html" class="nb">Library</a><a href="datasets.html" class="nb on">Datasets</a><span id="aqNavAuth"></span></div></nav>
+<div class="main">
+<a href="javascript:history.back()" class="back-btn">← Back</a>
+<h2 class="stl">📊 NASA Open Datasets</h2>
+<p style="text-align:center;font-size:0.72rem;color:var(--dim);margin-bottom:1rem">Free datasets for research, analysis, and space exploration projects</p>
+
+<h3 class="cat">🌍 Earth Observation</h3>
+<a href="https://earthdata.nasa.gov" target="_blank" class="ds"><h4>NASA Earthdata <span class="tag free">FREE</span></h4><p>Gateway to all Earth science data — atmospheric, oceanic, land, cryo from Terra, Aqua, Landsat, ICESat-2, GRACE-FO.</p><div class="dl">earthdata.nasa.gov ↗</div></a>
+<a href="https://power.larc.nasa.gov" target="_blank" class="ds"><h4>NASA POWER <span class="tag api">API</span> <span class="tag free">FREE</span></h4><p>Worldwide weather data — solar, temperature, humidity, wind, precipitation from satellites.</p><div class="dl">power.larc.nasa.gov ↗</div></a>
+<a href="https://firms.modaps.eosdis.nasa.gov" target="_blank" class="ds"><h4>FIRMS — Fire Data <span class="tag free">FREE</span></h4><p>Real-time active fire detection from MODIS/VIIRS. Global within 3 hours.</p><div class="dl">firms.modaps.eosdis.nasa.gov ↗</div></a>
+<a href="https://eonet.gsfc.nasa.gov" target="_blank" class="ds"><h4>NASA EONET <span class="tag api">API</span> <span class="tag free">FREE</span></h4><p>Earth Observatory Natural Event Tracker — live wildfires, storms, floods, volcanoes and other natural events. No key needed.</p><div class="dl">eonet.gsfc.nasa.gov ↗</div></a>
+<a href="https://giovanni.gsfc.nasa.gov" target="_blank" class="ds"><h4>Giovanni <span class="tag free">FREE</span></h4><p>Browser-based Earth science analysis — temperature, rainfall, aerosols, ocean chlorophyll.</p><div class="dl">giovanni.gsfc.nasa.gov ↗</div></a>
+
+<h3 class="cat">🪐 Planetary Science</h3>
+<a href="https://pds.nasa.gov" target="_blank" class="ds"><h4>Planetary Data System <span class="tag free">FREE</span></h4><p>Official archive for all mission data — Mars rovers, Cassini, Juno, New Horizons, MESSENGER.</p><div class="dl">pds.nasa.gov ↗</div></a>
+<a href="https://api.nasa.gov" target="_blank" class="ds"><h4>NASA Open APIs <span class="tag api">API</span> <span class="tag free">FREE KEY</span></h4><p>APOD, Mars Rover Photos, NEO, DONKI, EPIC, Exoplanet Archive. Free key, 1000 req/hr.</p><div class="dl">api.nasa.gov ↗</div></a>
+<a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet" target="_blank" class="ds"><h4>Planetary Fact Sheets <span class="tag free">FREE</span></h4><p>Authoritative data for all planets — mass, gravity, atmosphere, temperature, orbital parameters.</p><div class="dl">nssdc.gsfc.nasa.gov ↗</div></a>
+<a href="https://ssd.jpl.nasa.gov" target="_blank" class="ds"><h4>JPL Solar System Dynamics <span class="tag api">API</span> <span class="tag free">FREE</span></h4><p>Orbits, ephemerides, physical params. Horizons API for trajectories.</p><div class="dl">ssd.jpl.nasa.gov ↗</div></a>
+
+<h3 class="cat">🌌 Astronomy</h3>
+<a href="https://exoplanetarchive.ipac.caltech.edu" target="_blank" class="ds"><h4>Exoplanet Archive <span class="tag api">API</span> <span class="tag free">FREE</span></h4><p>5,000+ exoplanets — orbits, mass, radius, host stars. TAP query service.</p><div class="dl">exoplanetarchive.ipac.caltech.edu ↗</div></a>
+<a href="https://mast.stsci.edu" target="_blank" class="ds"><h4>MAST Archive <span class="tag free">FREE</span></h4><p>Hubble, JWST, Kepler, TESS — images, spectra, light curves.</p><div class="dl">mast.stsci.edu ↗</div></a>
+<a href="https://heasarc.gsfc.nasa.gov" target="_blank" class="ds"><h4>HEASARC <span class="tag free">FREE</span></h4><p>X-ray/gamma-ray from Chandra, Swift, Fermi. Black holes, neutron stars.</p><div class="dl">heasarc.gsfc.nasa.gov ↗</div></a>
+
+<h3 class="cat">🛰️ Technology & Imagery</h3>
+<a href="https://images.nasa.gov" target="_blank" class="ds"><h4>NASA Image Library <span class="tag api">API</span> <span class="tag free">FREE</span></h4><p>140,000+ images, 14,000+ videos. Hubble, JWST, Apollo, Mars, ISS.</p><div class="dl">images.nasa.gov ↗</div></a>
+<a href="https://data.nasa.gov" target="_blank" class="ds"><h4>NASA Open Data Portal <span class="tag free">FREE</span></h4><p>40,000+ datasets — climate, aeronautics, space, software, patents.</p><div class="dl">data.nasa.gov ↗</div></a>
+<a href="https://code.nasa.gov" target="_blank" class="ds"><h4>NASA Open Source Software <span class="tag free">FREE</span></h4><p>Flight software, simulation, analysis tools. Open for reuse.</p><div class="dl">code.nasa.gov ↗</div></a>
+<a href="https://techport.nasa.gov" target="_blank" class="ds"><h4>TechPort <span class="tag api">API</span> <span class="tag free">FREE</span></h4><p>2,500+ active technology projects — TRL, descriptions, status.</p><div class="dl">techport.nasa.gov ↗</div></a>
+
+<h2 class="stl" style="margin-top:2.5rem">🌐 Other Space Datasets & Sources</h2>
+<p style="text-align:center;font-size:0.72rem;color:var(--dim);margin-bottom:1rem">Beyond NASA — datasets from space agencies and research institutions worldwide</p>
+
+<h3 class="cat">🛰️ International Space Agencies</h3>
+<a href="https://www.cosmos.esa.int/web/gaia/data" target="_blank" class="ds"><h4>ESA Gaia Archive <span class="tag free">FREE</span></h4><p>European Space Agency's star catalog — precise positions, distances, and motions of 1.8 billion stars. The most detailed 3D map of our galaxy.</p><div class="dl">cosmos.esa.int/gaia ↗</div></a>
+<a href="https://www.esa.int/ESA_Multimedia/Images" target="_blank" class="ds"><h4>ESA Image Archive <span class="tag free">FREE</span></h4><p>European Space Agency's imagery — Mars Express, Rosetta, Gaia, Euclid, and Earth observation missions.</p><div class="dl">esa.int ↗</div></a>
+<a href="https://darts.isas.jaxa.jp/" target="_blank" class="ds"><h4>JAXA DARTS <span class="tag free">FREE</span></h4><p>Japan's space science archive — Hayabusa asteroid samples, Akatsuki Venus data, X-ray astronomy.</p><div class="dl">darts.isas.jaxa.jp ↗</div></a>
+
+<h3 class="cat">🔭 Astronomy Databases</h3>
+<a href="https://www.sdss.org/" target="_blank" class="ds"><h4>Sloan Digital Sky Survey <span class="tag free">FREE</span></h4><p>The most ambitious sky survey — detailed images and spectra of millions of galaxies, stars, and quasars. Maps the large-scale structure of the universe.</p><div class="dl">sdss.org ↗</div></a>
+<a href="https://simbad.u-strasbg.fr/simbad/" target="_blank" class="ds"><h4>SIMBAD Astronomical Database <span class="tag free">FREE</span></h4><p>Reference database for astronomical objects beyond the solar system — 12+ million objects with cross-identifications and bibliography.</p><div class="dl">simbad.u-strasbg.fr ↗</div></a>
+<a href="https://archive.stsci.edu/" target="_blank" class="ds"><h4>Space Telescope Science Institute <span class="tag free">FREE</span></h4><p>Operations center for Hubble and JWST. Vast archive of astronomical observations and data products.</p><div class="dl">archive.stsci.edu ↗</div></a>
+<a href="https://www.zooniverse.org/projects?discipline=astronomy" target="_blank" class="ds"><h4>Zooniverse — Citizen Science <span class="tag free">FREE</span></h4><p>Help classify galaxies, find exoplanets, map the Moon. Real research data you can contribute to analyzing.</p><div class="dl">zooniverse.org ↗</div></a>
+
+<h3 class="cat">🌍 Earth & Climate</h3>
+<a href="https://climate.esa.int/en/data/" target="_blank" class="ds"><h4>ESA Climate Change Initiative <span class="tag free">FREE</span></h4><p>Long-term satellite climate records — sea level, ice sheets, greenhouse gases, land cover.</p><div class="dl">climate.esa.int ↗</div></a>
+<a href="https://www.copernicus.eu/en/access-data" target="_blank" class="ds"><h4>Copernicus (EU) <span class="tag api">API</span> <span class="tag free">FREE</span></h4><p>European Earth observation — Sentinel satellites. Atmosphere, marine, land, climate, emergency, security data.</p><div class="dl">copernicus.eu ↗</div></a>
+
+<h3 class="cat">☄️ Specialized</h3>
+<a href="https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html" target="_blank" class="ds"><h4>Small-Body Database <span class="tag api">API</span> <span class="tag free">FREE</span></h4><p>Asteroids and comets — orbital data, physical parameters, close-approach predictions.</p><div class="dl">ssd.jpl.nasa.gov ↗</div></a>
+<a href="https://www.minorplanetcenter.net/data" target="_blank" class="ds"><h4>Minor Planet Center <span class="tag free">FREE</span></h4><p>Official repository for asteroid and comet observations — discovery, tracking, orbit determination.</p><div class="dl">minorplanetcenter.net ↗</div></a>
+
+<div class="footer"><p>AstroQuest · Team Astro_W1 · NASA Space Apps 2026 · Chittagong, Bangladesh<br>NASA datasets are public domain · Other sources per their respective licenses</p></div>
+</div><script src="js/chatbot.js"></script>
+</body></html>

@@ -1,0 +1,63 @@
+/* Styles for Login / Register / Profile pages (shares variables with site.css) */
+.acct-body{min-height:100vh;background:radial-gradient(ellipse at 50% 0%,#0a1628 0%,#000 70%);overflow-y:auto}
+.acct-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.4rem}
+.acct-nav a{color:var(--dim);text-decoration:none;font-size:0.75rem}
+.acct-nav a:hover{color:var(--accent)}
+.acct-main{display:flex;justify-content:center;padding:1.5rem 1rem 3rem}
+.acct-card{width:100%;max-width:420px;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:1.6rem;box-shadow:0 0 40px rgba(0,212,255,0.06)}
+.acct-card.wide{max-width:720px}
+.acct-card h1{font-size:1.25rem;color:var(--accent);margin-bottom:0.3rem}
+.acct-card h2{font-size:0.8rem;color:var(--accent);margin:1.4rem 0 0.5rem}
+.acct-sub{color:var(--dim);font-size:0.78rem;margin-bottom:1rem;line-height:1.5}
+.acct-card label{display:block;font-size:0.7rem;color:var(--dim);margin:0.8rem 0 0.25rem}
+.acct-card input:not([type=checkbox]){width:100%;padding:0.6rem 0.7rem;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.85rem;font-family:'Inter',sans-serif}
+.acct-card input:focus{outline:none;border-color:var(--accent)}
+.acct-check{display:flex!important;align-items:center;gap:0.4rem;cursor:pointer}
+.acct-btn{display:inline-block;margin-top:1.1rem;width:100%;text-align:center;padding:0.65rem 1rem;background:var(--accent);color:#000;border:none;border-radius:8px;font-family:'Orbitron',sans-serif;font-size:0.72rem;cursor:pointer;text-decoration:none}
+.acct-btn.secondary{background:transparent;color:var(--dim);border:1px solid var(--border)}
+.acct-btn:hover{filter:brightness(1.1)}
+.acct-alt{text-align:center;margin-top:1rem;font-size:0.75rem;color:var(--dim)}
+.acct-alt a{color:var(--accent)}
+.acct-error{color:var(--danger);font-size:0.72rem;display:block;margin-top:0.2rem}
+.acct-error ul{list-style:none}
+.rank-box{background:rgba(0,212,255,0.05);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center;margin-bottom:1rem}
+.rank-name{font-family:'Orbitron';font-size:1.3rem;color:var(--accent2)}
+.rank-bar{height:8px;background:rgba(255,255,255,0.08);border-radius:6px;margin:0.7rem 0;overflow:hidden}
+.rank-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.rank-xp{font-size:0.72rem;color:var(--dim)}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem}
+.stat{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:0.8rem;text-align:center}
+.stat .v{font-family:'Orbitron';font-size:1.1rem;color:var(--accent)}
+.stat .l{font-size:0.62rem;color:var(--dim);margin-top:0.2rem}
+.chips{display:flex;flex-wrap:wrap;gap:0.35rem}
+.chip{background:rgba(123,97,255,0.15);border:1px solid rgba(123,97,255,0.35);color:var(--text);padding:0.2rem 0.6rem;border-radius:14px;font-size:0.7rem}
+
+/* ---- layout + Admin area ---- */
+.acct-main{align-items:flex-start}
+.acct-stack{width:100%;display:flex;flex-direction:column;align-items:center;gap:0.8rem}
+.acct-nav{display:flex;flex-wrap:wrap;gap:0.4rem 1.1rem;justify-content:flex-end}
+.acct-card.xwide{max-width:1000px}
+.acct-card textarea,.acct-card select{width:100%;padding:0.6rem 0.7rem;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.85rem;font-family:'Inter',sans-serif;resize:vertical}
+.acct-card textarea:focus,.acct-card select:focus{outline:none;border-color:var(--accent)}
+.acct-card input[type=radio]{width:auto;padding:0}
+.acct-card input:focus-visible,.acct-btn:focus-visible,.adm-btn:focus-visible,.acct-nav a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.acct-card code{font-size:0.7rem;color:var(--accent);word-break:break-all}
+.adm-flash{width:100%;max-width:1000px;padding:0.6rem 0.9rem;border:1px solid var(--accent);border-radius:10px;background:rgba(0,212,255,0.08);color:var(--text);font-size:0.78rem}
+.adm-status-row{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem}
+.adm-status{font-size:0.72rem;padding:0.25rem 0.7rem;border-radius:14px;border:1px solid var(--border)}
+.adm-status.ok{color:var(--success);border-color:rgba(0,230,118,0.4);background:rgba(0,230,118,0.08)}
+.adm-status.warn{color:var(--warn);border-color:rgba(255,107,53,0.4);background:rgba(255,107,53,0.08)}
+.adm-status.bad{color:var(--danger);border-color:rgba(255,23,68,0.4);background:rgba(255,23,68,0.08)}
+.adm-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0.6rem}
+.adm-table-wrap{overflow-x:auto;margin-top:0.8rem}
+.adm-table-wrap .lb-table{font-size:0.74rem;min-width:620px}
+.adm-table-wrap .lb-table td{padding:0.5rem 0.4rem;vertical-align:middle}
+.adm-actions{white-space:nowrap}
+.adm-actions form{display:inline}
+.adm-btn{display:inline-block;padding:0.3rem 0.65rem;margin:0 0.2rem 0.2rem 0;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.68rem;font-family:'Inter',sans-serif;cursor:pointer;text-decoration:none}
+.adm-btn:hover{border-color:var(--accent);color:var(--accent)}
+.adm-btn.danger:hover{border-color:var(--danger);color:var(--danger)}
+.adm-links{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:1rem}
+.adm-links .acct-btn{width:auto;margin-top:0}
+.adm-radios{border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.8rem 0.7rem;margin-top:0.8rem;display:flex;flex-wrap:wrap;gap:0.2rem 1.2rem;align-items:center}
+.adm-radios legend{font-size:0.7rem;color:var(--dim);padding:0 0.3rem}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Astronaut Profile — AstroQuest</title>
+<link rel="stylesheet" href="css/site.css"><link rel="stylesheet" href="css/account.css"><link rel="stylesheet" href="css/aq.css"><link rel="stylesheet" href="css/chatbot.css">
+<style>.acct-body{display:block}.acct-card input[type=checkbox]{width:auto;padding:0}.lb-table{font-size:0.74rem}</style>
+</head><body class="acct-body">
+<script src="js/seed-data.js"></script><script src="js/mock-api.js"></script><script src="js/aq-common.js"></script>
+<header class="acct-header"><a class="logo" href="index.html" style="font-family:Orbitron;color:var(--accent);text-decoration:none;font-size:1rem;letter-spacing:2px">Astro<span style="color:var(--accent2)">Quest</span></a>
+<nav class="acct-nav" aria-label="Account" id="acctNav"><a href="index.html">← Back to Space</a></nav></header>
+<main class="acct-main"><div class="acct-stack"><div class="acct-card wide" id="card"><p class="acct-sub">Loading…</p></div></div></main>
+<script>(function(){if(AQ.auth&&AQ.admin){document.getElementById('acctNav').insertAdjacentHTML('afterbegin','<a href="'+aqHref('admin.html')+'">Mission Control</a><a href="'+aqHref('admin.html')+'#users">Users</a><a href="'+aqHref('admin.html')+'#questions">Quiz questions</a>')}})();</script>
+<script>
+(function(){var p=AQMock.profile();var c=document.getElementById('card');if(!p){aqGo('login.html');return}
+var d=function(s){var x=new Date(s);return x.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})};
+var dt=function(s){var x=new Date(s);return d(s)+' '+x.toISOString().slice(11,16)+' UTC'};
+var floor=p.rank==='Commander'?500:p.rank==='Pilot'?200:0,pct=p.nextRankXp!=null?Math.min(100,Math.floor((p.xp-floor)*100/(p.nextRankXp-floor))):100;
+var chips=function(a,f){return a.length?'<div class="chips">'+a.map(f).join('')+'</div>':''};
+c.innerHTML='<h1>👨‍🚀 '+esc(p.displayName)+'</h1><p class="acct-sub">'+esc(p.email)+' · Joined '+d(p.joinedAt)+'</p>'+
+'<div class="rank-box"><div class="rank-name">'+p.rank+'</div><div class="rank-bar"><div class="rank-fill" style="width:'+pct+'%"></div></div><div class="rank-xp">'+p.xp+' XP <span>· '+(p.nextRankXp!=null?(p.nextRankXp-p.xp)+' XP to next rank':'Highest rank reached')+'</span></div></div>'+
+'<div class="stat-row"><div class="stat"><div class="v">'+p.bestQuizPercent+'%</div><div class="l">Best quiz</div></div><div class="stat"><div class="v">'+p.bestMissionScore+'%</div><div class="l">Best moon mission</div></div><div class="stat"><div class="v">'+p.exploredPlanets.length+'/'+p.totalPlanets+'</div><div class="l">Worlds explored</div></div></div>'+
+'<h2>Explored worlds</h2>'+(p.exploredPlanets.length?chips(p.exploredPlanets,function(x){return '<span class="chip">'+esc(x)+'</span>'}):'<p class="acct-sub">None yet — click a planet and choose “Explore”.</p>')+
+'<h2>Badges</h2>'+(p.badges.length?chips(p.badges,function(b){return '<span class="chip" title="'+esc(b.description)+'">'+b.icon+' '+esc(b.name)+'</span>'}):'<p class="acct-sub">No badges yet — launch a rocket, ace a quiz or explore the planets.</p>')+
+'<h2>Recent launches</h2>'+(p.launches.length?'<table class="lb-table"><tr><th>Date</th><th>Destination</th><th>Mass</th><th>Result</th></tr>'+p.launches.map(function(l){return '<tr><td>'+dt(l.launchedAt)+'</td><td>'+esc(l.destination)+'</td><td class="num">'+(l.totalMassKg/1000).toFixed(1)+' t</td><td>'+(l.success?'Landed':'Not possible yet')+'</td></tr>'}).join('')+'</table>':'<p class="acct-sub">No launches yet — build a rocket in the Rocket Lab.</p>')+
+'<h2>Recent quizzes</h2>'+(p.recentQuizzes.length?'<table class="lb-table"><tr><th>Date</th><th>Score</th><th>Result</th></tr>'+p.recentQuizzes.map(function(a){return '<tr><td>'+dt(a.at)+'</td><td>'+a.score+' / '+a.total+'</td><td class="num">'+a.percent+'%</td></tr>'}).join('')+'</table>':'<p class="acct-sub">No quiz attempts yet.</p>')+
+'<button type="button" class="acct-btn secondary" id="lo" style="margin-top:1.2rem">Logout</button>';
+document.getElementById('lo').onclick=function(){AQMock.logout();aqGo('index.html')};})();</script>
+<script src="js/chatbot.js"></script>
+</body></html>

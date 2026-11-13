@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AstroQuest — Junior Astronaut Mission Trainer</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#000;color:#e0e8f8;overflow-x:hidden}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 30%,#0a1628 0%,#000 70%)}
+.stars{position:absolute;inset:0;overflow:hidden;z-index:0}
+.star{position:absolute;background:#fff;border-radius:50%}
+@keyframes pulse{0%,100%{opacity:0.15}50%{opacity:0.8}}
+.content{position:relative;z-index:2}
+.tag{font-size:0.52rem;color:#00d4ff;font-family:'Orbitron';letter-spacing:5px;margin-bottom:1.2rem;font-weight:400}
+h1{font-family:'Orbitron';font-size:clamp(1.8rem,5vw,3.2rem);font-weight:700;letter-spacing:4px;
+  background:linear-gradient(135deg,#00d4ff,#7b61ff,#ff6b35,#00e676);background-size:300% 300%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gshift 6s ease infinite;margin-bottom:1rem}
+@keyframes gshift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.sub{font-size:clamp(0.75rem,1.6vw,0.9rem);color:#8a98b5;max-width:480px;line-height:1.9;margin:0 auto 2.5rem;font-weight:300;text-align:center}
+.btn{background:linear-gradient(135deg,#00d4ff,#7b61ff);color:#fff;border:none;
+  padding:0.85rem 2.5rem;border-radius:50px;font-family:'Orbitron';font-size:clamp(0.7rem,1.6vw,0.82rem);
+  cursor:pointer;letter-spacing:1.5px;font-weight:400;transition:transform 0.3s,box-shadow 0.3s;text-decoration:none;display:inline-block}
+.btn:hover{transform:scale(1.06);box-shadow:0 0 40px rgba(0,212,255,0.4)}
+.features{display:flex;gap:1.2rem;margin-top:2.5rem;flex-wrap:wrap;justify-content:center}
+.feat{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;
+  padding:1rem 1.2rem;width:150px;text-align:center;transition:all 0.3s;text-decoration:none;color:inherit}
+.feat:hover{border-color:#00d4ff;transform:translateY(-3px)}
+.feat .fi{font-size:1.8rem;margin-bottom:0.4rem}.feat .ft{font-size:0.65rem;font-family:'Orbitron';color:#e0e8f8}
+.feat .fd{font-size:0.55rem;color:#7a8aaa;margin-top:0.2rem}
+
+/* Floating objects */
+.float-obj{position:absolute;z-index:1;opacity:0.4;font-size:1.5rem;left:0;animation-timing-function:linear;animation-iteration-count:infinite;animation-fill-mode:backwards;will-change:transform}
+@keyframes floatLR{0%{transform:translateX(-10vw) translateY(0) rotate(0deg)}100%{transform:translateX(110vw) translateY(-30px) rotate(360deg)}}
+@keyframes floatRL{0%{transform:translateX(110vw) translateY(0) rotate(0deg)}100%{transform:translateX(-10vw) translateY(20px) rotate(-360deg)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+.shoot{position:absolute;z-index:1;width:80px;height:2px;background:linear-gradient(90deg,transparent,#fff,#aaddff);border-radius:2px;opacity:0;animation:shoot 8s linear infinite}
+@keyframes shoot{0%{transform:translateX(0) translateY(0) rotate(20deg);opacity:0}5%{opacity:1}15%{transform:translateX(110vw) translateY(40vh) rotate(20deg);opacity:0}100%{opacity:0}}
+/* Descending spaceship — lands above button */
+.landing-ship{position:relative;z-index:3;font-size:2.2rem;display:inline-block;margin-bottom:0.8rem;
+  animation:descend 3s ease-out forwards,shipBob 2.5s ease-in-out 3s infinite;opacity:0}
+@keyframes descend{0%{transform:translateY(-280px);opacity:0}30%{opacity:1}100%{transform:translateY(0);opacity:1}}
+@keyframes shipBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.ship-flame{position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:6px;height:14px;
+  background:linear-gradient(180deg,#ff6600,#ffcc00,transparent);border-radius:0 0 50% 50%;
+  animation:flameFlick 0.2s infinite alternate}
+@keyframes flameFlick{0%{opacity:0.5;height:10px}100%{opacity:1;height:16px}}
+
+.footer{background:rgba(5,10,24,0.95);border-top:1px solid rgba(0,212,255,0.12);padding:2rem 1.2rem;text-align:center}
+.footer .fl{font-family:'Orbitron';font-size:1rem;color:#00d4ff;letter-spacing:2px;margin-bottom:0.4rem}
+.footer .fl span{color:#7b61ff}
+.footer p{font-size:0.58rem;color:#7a8aaa;line-height:1.8;max-width:600px;margin:0 auto}
+.footer a{color:#00d4ff;text-decoration:none}
+.f-links{display:flex;gap:0.6rem;justify-content:center;flex-wrap:wrap;margin:0.8rem 0}
+.f-link{font-size:0.55rem;color:#7a8aaa;border:1px solid rgba(0,212,255,0.12);padding:0.2rem 0.5rem;
+  border-radius:12px;text-decoration:none;transition:all 0.2s}
+.f-link:hover{color:#00d4ff;border-color:#00d4ff}
+.aq-top{position:absolute;top:1rem;right:1rem;z-index:50;display:flex;gap:0.25rem;flex-wrap:wrap;justify-content:flex-end;max-width:90vw}
+.aq-top form{display:inline-flex}
+.nb{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);color:#7a8aaa;padding:0.25rem 0.65rem;border-radius:16px;cursor:pointer;font-size:0.63rem;font-family:'Inter',sans-serif;transition:all 0.3s;white-space:nowrap;text-decoration:none}
+.nb:hover,.nb.on{background:rgba(0,212,255,0.12);color:#00d4ff;border-color:#00d4ff}
+</style>
+<link rel="stylesheet" href="css/aq.css" />
+<link rel="stylesheet" href="css/chatbot.css" />
+</head>
+<body>
+<script src="js/seed-data.js"></script><script src="js/mock-api.js"></script><script src="js/aq-common.js"></script>
+<div class="aq-top"><span id="aqNavAuth"></span></div>
+<div class="hero">
+  <div class="stars" id="stars"></div>
+
+  <!-- Shooting stars (subtle) -->
+  <div class="shoot" style="top:15%;animation-delay:3s"></div>
+  <div class="shoot" style="top:50%;animation-delay:11s"></div>
+
+  <div class="content">
+    <div class="tag">NASA SPACE APPS CHALLENGE 2026</div>
+    <h1>AstroQuest</h1>
+    <p class="sub">Explore the solar system in 3D, discover distant galaxies, build rockets, and launch missions to the Moon and beyond. Your journey as a Junior Astronaut begins now.</p>
+    <div class="landing-ship">🚀<div class="ship-flame"></div></div>
+    <br>
+    <a href="explore.html" class="btn">Begin Your Mission ➜</a>
+    <div class="features">
+      <a href="explore.html" class="feat"><div class="fi">🪐</div><div class="ft">Solar System</div><div class="fd">3D planets & moons</div></a>
+      <a href="deepspace.html" class="feat"><div class="fi">🕳️</div><div class="ft">Deep Space</div><div class="fd">Black holes & galaxies</div></a>
+      <a href="rocket.html" class="feat"><div class="fi">🚀</div><div class="ft">Rocket Lab</div><div class="fd">Build & launch rockets</div></a>
+      <a href="nasa-live.html" class="feat"><div class="fi">🛰️</div><div class="ft">NASA Live</div><div class="fd">Real-time NASA data</div></a>
+      <a href="quiz.html" class="feat"><div class="fi">🧠</div><div class="ft">Space Quiz</div><div class="fd">Test your knowledge</div></a>
+      <a href="research.html" class="feat"><div class="fi">🔬</div><div class="ft">Research</div><div class="fd">Latest papers & topics</div></a>
+      <a href="library.html" class="feat"><div class="fi">📚</div><div class="ft">Library</div><div class="fd">Resources & guides</div></a>
+      <a href="leaderboard.html" class="feat"><div class="fi">🏆</div><div class="ft">Leaderboard</div><div class="fd">Top astronauts</div></a>
+    </div>
+    <a href="nasa-live.html" id="earthNow" class="feat" style="display:none;margin:1rem auto 0;max-width:340px"><div class="fi">🌍</div><div class="ft">Earth right now</div><div class="fd" id="earthNowTxt"></div></a>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="fl">Astro<span>Quest</span></div>
+  <p>Junior Astronaut Mission Trainer — Built for the 2026 NASA Space Apps Challenge</p>
+  <p>Team Astro_W1 · Chittagong, Bangladesh · International Islamic University Chittagong</p>
+  <div class="f-links">
+    <a class="f-link" href="https://api.nasa.gov" target="_blank">NASA APIs</a>
+    <a class="f-link" href="https://data.nasa.gov" target="_blank">NASA Data</a>
+    <a class="f-link" href="https://eyes.nasa.gov" target="_blank">NASA Eyes</a>
+    <a class="f-link" href="https://solarsystem.nasa.gov" target="_blank">Solar System</a>
+    <a class="f-link" href="https://images.nasa.gov" target="_blank">NASA Images</a>
+    <a class="f-link" href="https://mars.nasa.gov" target="_blank">Mars</a>
+    <a class="f-link" href="https://nasa.gov/artemis" target="_blank">Artemis</a>
+  </div>
+  <p style="margin-top:0.5rem">All data from <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/" target="_blank">NASA Planetary Fact Sheet</a> · APIs: <a href="https://api.nasa.gov" target="_blank">api.nasa.gov</a><br>
+  Challenge: "Build a Junior Astronaut Mission Trainer"</p>
+  <p style="font-size:0.45rem;color:rgba(255,255,255,0.12);margin-top:1rem">© 2026 Team Astro_W1</p>
+</footer>
+
+<script>
+const c=document.getElementById('stars');
+for(let i=0;i<250;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2.5+0.3;
+  const colors=['#fff','#aaddff','#ffddaa','#ffaaaa','#aaffaa'];
+  Object.assign(s.style,{width:sz+'px',height:sz+'px',top:Math.random()*100+'%',left:Math.random()*100+'%',
+    background:colors[Math.floor(Math.random()*colors.length)],
+    opacity:0.1+Math.random()*0.5,animation:`pulse ${1.5+Math.random()*4}s ${Math.random()*3}s infinite`});c.appendChild(s)}
+</script>
+<script src="js/chatbot.js"></script>
+<script>
+fetch('/api/nasa/events').then(r=>r.ok?r.json():null).then(d=>{
+  if(!d||!d.events)return;
+  document.getElementById('earthNowTxt').textContent=d.events.length+' natural events open today';
+  document.getElementById('earthNow').style.display='';
+}).catch(()=>{});
+</script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Space Quiz — AstroQuest</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#050a18;--accent:#00d4ff;--accent2:#7b61ff;--success:#00e676;--danger:#ff1744;--warn:#ff6b35;--text:#e0e8f8;--dim:#7a8aaa;--border:rgba(0,212,255,0.12)}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+h1,h2,h3{font-family:'Orbitron',sans-serif;font-weight:600}
+.nav{position:fixed;top:0;left:0;right:0;z-index:500;background:rgba(5,10,24,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0.6rem 1.2rem;display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap}
+.logo{font-family:'Orbitron';font-size:0.95rem;font-weight:700;color:var(--accent);text-decoration:none}.logo span{color:var(--accent2)}
+.navr{display:flex;gap:0.25rem;margin-left:auto;flex-wrap:wrap}
+.nb{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);color:var(--dim);padding:0.25rem 0.55rem;border-radius:16px;font-size:0.63rem;font-family:'Inter';transition:all 0.3s;text-decoration:none}
+.nb:hover,.nb.on{background:rgba(0,212,255,0.12);color:var(--accent);border-color:var(--accent)}
+.main{position:relative;z-index:1;max-width:750px;margin:0 auto;padding:4.5rem 1.2rem 2rem}
+.stl{font-size:1.3rem;margin-bottom:0.5rem;text-align:center;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+/* Topic Selection */
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0.7rem;margin:1.5rem 0}
+.topic-card{background:rgba(0,212,255,0.04);border:1px solid var(--border);border-radius:12px;
+  padding:1rem;text-align:center;cursor:pointer;transition:all 0.3s}
+.topic-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 0 20px rgba(0,212,255,0.15)}
+.topic-card .te{font-size:2rem;margin-bottom:0.4rem}.topic-card .tn{font-size:0.7rem;font-family:'Orbitron'}
+.topic-card .tc{font-size:0.55rem;color:var(--dim);margin-top:0.15rem}
+/* Score bar */
+.score-bar{position:sticky;top:3.5rem;z-index:10;background:rgba(5,10,24,0.95);backdrop-filter:blur(8px);
+  border:1px solid var(--border);border-radius:10px;padding:0.6rem 1rem;margin-bottom:1rem;
+  display:flex;justify-content:space-between;align-items:center}
+.score-bar .s-topic{font-family:'Orbitron';font-size:0.7rem;color:var(--accent)}
+.score-bar .s-score{font-family:'Orbitron';font-size:0.85rem}
+.score-bar .s-right{color:var(--success)}.score-bar .s-wrong{color:var(--danger)}
+/* Question */
+.qcard{background:rgba(0,212,255,0.03);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:0.8rem}
+.qnum{font-size:0.6rem;color:var(--accent);font-family:'Orbitron';margin-bottom:0.4rem}
+.qq{font-size:0.88rem;margin-bottom:0.8rem;line-height:1.6}
+.qopt{padding:0.55rem 0.9rem;border:1px solid var(--border);border-radius:7px;margin:0.3rem 0;
+  cursor:pointer;font-size:0.76rem;transition:all 0.2s}
+.qopt:hover:not(.done){border-color:var(--accent);background:rgba(0,212,255,0.05)}
+.qopt.correct{border-color:var(--success);background:rgba(0,230,118,0.1);color:var(--success);cursor:default}
+.qopt.wrong{border-color:var(--danger);background:rgba(255,23,68,0.08);color:var(--danger);cursor:default}
+.qopt.right-ans{border-color:var(--success);background:rgba(0,230,118,0.06)}
+.qexp{font-size:0.7rem;color:var(--dim);margin-top:0.5rem;padding:0.5rem;background:rgba(0,230,118,0.04);border-radius:6px;line-height:1.6;display:none}
+.qexp.show{display:block}
+/* Results */
+.result-box{text-align:center;padding:2rem;background:rgba(0,212,255,0.04);border:1px solid var(--border);border-radius:14px;margin:1rem 0}
+.result-box .r-score{font-family:'Orbitron';font-size:2rem;margin:0.5rem 0}
+.result-box .r-msg{font-size:0.9rem;color:var(--dim);margin-bottom:1rem}
+.rbtn{padding:0.6rem 1.5rem;background:var(--accent);color:#000;border:none;border-radius:8px;cursor:pointer;font-family:'Orbitron';font-size:0.7rem;margin:0.3rem}
+.rbtn.sec{background:rgba(255,255,255,0.06);color:var(--text);border:1px solid var(--border)}
+.footer{text-align:center;padding:2rem 1rem;border-top:1px solid var(--border);margin-top:2rem}
+.footer p{font-size:0.55rem;color:var(--dim);line-height:1.8}.footer a{color:var(--accent);text-decoration:none}
+.back-btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;background:rgba(0,212,255,0.08);border:1px solid var(--border);border-radius:20px;color:var(--accent);font-family:'Orbitron';font-size:0.62rem;cursor:pointer;margin-bottom:1rem;text-decoration:none;transition:all 0.3s}
+.back-btn:hover{background:rgba(0,212,255,0.15);border-color:var(--accent)}
+
+/* Subtle background graphics */
+.bg-deco{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bg-deco .bo{position:absolute;opacity:0.06;font-size:2rem;left:0;animation:bgDrift linear infinite;animation-fill-mode:backwards}
+@keyframes bgDrift{0%{transform:translateX(-8vw) translateY(0) rotate(0)}100%{transform:translateX(108vw) translateY(-20px) rotate(360deg)}}
+@keyframes bgDriftR{0%{transform:translateX(108vw) translateY(0) rotate(0)}100%{transform:translateX(-8vw) translateY(15px) rotate(-360deg)}}
+.bg-star{position:absolute;background:#fff;border-radius:50%;opacity:0.15;animation:twk linear infinite}
+@keyframes twk{0%,100%{opacity:0.05}50%{opacity:0.25}}
+</style><link rel="stylesheet" href="css/aq.css" />
+<link rel="stylesheet" href="css/chatbot.css" />
+</head><body>
+<script src="js/seed-data.js"></script><script src="js/mock-api.js"></script><script src="js/aq-common.js"></script>
+<div class="bg-deco" id="bgDeco">
+<div class="bo" style="top:15%;animation:bgDrift 50s linear infinite;animation-delay:-5s">🚀</div>
+<div class="bo" style="top:60%;animation:bgDriftR 65s linear infinite;animation-delay:-30s">🛰️</div>
+<div class="bo" style="top:35%;animation:bgDrift 70s linear infinite;animation-delay:-45s">🪐</div>
+<div class="bo" style="top:80%;animation:bgDriftR 55s linear infinite;animation-delay:-15s">☄️</div>
+<div class="bo" style="top:25%;animation:bgDrift 80s linear infinite;animation-delay:-60s">🌙</div>
+<div class="bo" style="top:70%;animation:bgDriftR 75s linear infinite;animation-delay:-20s">⭐</div>
+</div>
+<script>(function(){var d=document.getElementById('bgDeco');if(!d)return;for(var i=0;i<60;i++){var s=document.createElement('div');s.className='bg-star';var sz=Math.random()*2+0.5;s.style.width=sz+'px';s.style.height=sz+'px';s.style.top=Math.random()*100+'%';s.style.left=Math.random()*100+'%';s.style.animationDuration=(2+Math.random()*4)+'s';s.style.animationDelay=Math.random()*3+'s';d.appendChild(s)}})();</script>
+
+<nav class="nav"><a href="index.html" class="logo">Astro<span>Quest</span></a>
+<div class="navr"><a href="explore.html" class="nb">Solar System</a><a href="deepspace.html" class="nb">Deep Space</a><a href="rocket.html" class="nb">Rocket Lab</a><a href="budget.html" class="nb">Budget</a>
+<a href="nasa-live.html" class="nb">NASA Live</a><a href="quiz.html" class="nb on">Quiz</a><a href="research.html" class="nb">Research</a><a href="library.html" class="nb">Library</a><a href="datasets.html" class="nb">Datasets</a><span id="aqNavAuth"></span></div></nav>
+<div class="main">
+<a href="javascript:history.back()" class="back-btn">← Back</a>
+<h2 class="stl">🧠 Space Quiz</h2>
+<p style="text-align:center;color:var(--dim);font-size:0.8rem;margin-bottom:1rem">Choose a topic to start your quiz!</p>
+<div id="quizArea"></div>
+<div class="footer"><p>AstroQuest · Team Astro_W1 · NASA Space Apps 2026<br>Data: <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/" target="_blank">NASA Planetary Fact Sheet</a></p></div>
+</div>
+<script>
+// Topics, questions and answers come from SQL Server. The correct answer is never sent to the browser
+// before the player answers: every click is checked by POST /api/quiz/check, the result by /api/quiz/submit.
+const TOPIC_META={Planets:{emoji:'🪐',desc:'Solar system planets'},Sun:{emoji:'☀️',desc:'Our star'},Moon:{emoji:'🌕',desc:'Earth\'s satellite'},
+  DeepSpace:{emoji:'🕳️',desc:'Black holes, pulsars, nebulae'},Missions:{emoji:'🚀',desc:'Space missions & technology'},General:{emoji:'🎲',desc:'Mixed questions'}};
+const tmeta=k=>TOPIC_META[k]||{emoji:'❓',desc:'Space questions'};
+const tlabel=k=>k==='DeepSpace'?'Deep Space':k;
+let currentTopic=null,qs=[],score=0,answered=0,total=0,picks=[];
+const area=()=>document.getElementById('quizArea');
+
+async function showTopics(){
+  area().innerHTML='<p style="text-align:center;color:var(--dim);font-size:0.78rem">Loading topics...</p>';
+  try{
+    const topics=await aqFetch('/api/quiz/topics').then(r=>r.json());
+    if(!topics.length){area().innerHTML='<p style="text-align:center;color:var(--dim)">No quiz questions yet.</p>';return}
+    area().innerHTML=`<p style="text-align:center;color:var(--dim);font-size:0.78rem;margin-bottom:1.2rem">Select a topic — up to 10 questions will appear</p>
+      <div class="topic-grid">${topics.map(t=>{const m=tmeta(t.topic);
+        return `<div class="topic-card" onclick="startQuiz(this.dataset.t)" data-t="${esc(t.topic)}"><div class="te">${m.emoji}</div><div class="tn">${esc(tlabel(t.topic))}</div><div class="tc">${esc(m.desc)} · ${t.count}</div></div>`}).join('')}</div>`;
+  }catch(e){area().innerHTML='<p style="text-align:center;color:var(--danger);font-size:0.78rem">Could not load the quiz. Is the database connected?</p>'}
+}
+
+async function startQuiz(topicKey){
+  currentTopic=topicKey;score=0;answered=0;picks=[];
+  area().innerHTML='<p style="text-align:center;color:var(--dim);font-size:0.78rem">Loading questions...</p>';
+  try{qs=await aqFetch('/api/quiz/random?count=10&topic='+encodeURIComponent(topicKey)).then(r=>r.json())}
+  catch(e){area().innerHTML='<p style="text-align:center;color:var(--danger)">Could not load questions.</p>';return}
+  total=qs.length;const m=tmeta(topicKey);
+  let h=`<div class="score-bar"><div class="s-topic">${m.emoji} ${esc(tlabel(topicKey))}</div><div><span class="s-right" id="sc">0</span><span style="color:var(--dim)"> / ${total}</span></div></div>`;
+  qs.forEach((q,i)=>{
+    h+=`<div class="qcard" id="qc${i}"><div class="qnum">Question ${i+1}</div><p class="qq">${esc(q.text)}</p>
+      ${q.options.map((o,j)=>`<div class="qopt" id="q${i}o${j}" onclick="answer(${i},${j})">${esc(o)}</div>`).join('')}
+      <div class="qexp" id="qe${i}"></div></div>`});
+  h+=`<div id="resultArea"></div><div style="text-align:center;margin-top:1rem"><button class="rbtn sec" onclick="showTopics()">← Choose Another Topic</button></div>`;
+  area().innerHTML=h;window.scrollTo({top:0,behavior:'smooth'})}
+
+async function answer(qi,oi){
+  const q=qs[qi],card=document.getElementById('qc'+qi);
+  if(card.dataset.answered)return;card.dataset.answered='1';
+  let res;
+  try{res=await aqFetch('/api/quiz/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({questionId:q.id,selectedIndex:oi})}).then(r=>r.json())}
+  catch(e){delete card.dataset.answered;aqToast('Could not check the answer, try again');return}
+  answered++;picks.push({questionId:q.id,selectedIndex:oi});
+  q.options.forEach((_,j)=>{const el=document.getElementById('q'+qi+'o'+j);el.classList.add('done');
+    if(j===res.correctIndex)el.classList.add(oi===res.correctIndex?'correct':'right-ans');
+    else if(j===oi)el.classList.add('wrong')});
+  if(res.correct)score++;
+  document.getElementById('sc').textContent=score;
+  const ex=document.getElementById('qe'+qi);ex.textContent='💡 '+res.explanation;ex.classList.add('show');
+  if(answered===total)finishQuiz()}
+
+async function finishQuiz(){
+  let r=null;
+  try{r=await aqFetch('/api/quiz/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({answers:picks})}).then(x=>x.json())}catch(e){}
+  const sc=r?r.score:score,pct=r?r.percent:Math.round(score/total*100);
+  const msg=pct>=80?'🌟 Excellent!':pct>=60?'👍 Good job!':pct>=40?'📚 Keep learning!':'💪 Try again!';
+  const extra=r&&r.saved?`<p style="font-size:0.72rem;color:var(--accent);margin-bottom:0.8rem">+${r.xpEarned} XP · ${esc(r.rank)} · ${r.totalXp} XP total</p>`
+    :`<p style="font-size:0.7rem;color:var(--dim);margin-bottom:0.8rem">Log in to save your score, earn XP and join the leaderboard.</p>`;
+  document.getElementById('resultArea').innerHTML=`<div class="result-box">
+      <h3 style="font-size:0.8rem;color:var(--accent)">Quiz Complete!</h3>
+      <div class="r-score" style="color:${pct>=60?'var(--success)':'var(--warn)'}">${sc}/${total} (${pct}%)</div>
+      <div class="r-msg">${msg}</div>${extra}
+      <button class="rbtn" onclick="startQuiz(currentTopic)">Retry ${esc(tlabel(currentTopic))}</button>
+      <button class="rbtn sec" onclick="showTopics()">Other Topics</button>
+      <a class="rbtn sec" href="leaderboard.html" style="text-decoration:none;display:inline-block">🏆 Leaderboard</a></div>`;
+  if(r&&r.saved){AQ.xp=r.totalXp;AQ.rank=r.rank;aqBadges(r.newBadges)}
+  document.getElementById('resultArea').scrollIntoView({behavior:'smooth',block:'center'})}
+
+showTopics();
+</script>
+<script src="js/chatbot.js"></script>
+</body></html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>NASA Live Data — AstroQuest</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#050a18;--accent:#00d4ff;--accent2:#7b61ff;--warn:#ff6b35;--success:#00e676;--text:#e0e8f8;--dim:#7a8aaa;--border:rgba(0,212,255,0.12)}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+h1,h2,h3,h4{font-family:'Orbitron',sans-serif;font-weight:600}
+.nav{position:fixed;top:0;left:0;right:0;z-index:500;background:rgba(5,10,24,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0.6rem 1.2rem;display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap}
+.logo{font-family:'Orbitron';font-size:0.95rem;font-weight:700;color:var(--accent);text-decoration:none}.logo span{color:var(--accent2)}
+.navr{display:flex;gap:0.25rem;margin-left:auto;flex-wrap:wrap}
+.nb{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);color:var(--dim);padding:0.25rem 0.55rem;border-radius:16px;font-size:0.63rem;font-family:'Inter';transition:all 0.3s;text-decoration:none}
+.nb:hover,.nb.on{background:rgba(0,212,255,0.12);color:var(--accent);border-color:var(--accent)}
+.main{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:4.5rem 1.2rem 2rem}
+.stl{font-size:1.3rem;margin-bottom:0.3rem;text-align:center;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.live-dot{display:inline-block;width:8px;height:8px;background:var(--success);border-radius:50%;animation:pulse 2s infinite;vertical-align:middle}
+@keyframes pulse{0%,100%{opacity:0.3}50%{opacity:1}}
+.card{background:rgba(0,212,255,0.03);border:1px solid var(--border);border-radius:12px;padding:1.2rem;margin:1rem 0}
+.card h3{font-size:0.8rem;color:var(--accent);margin-bottom:0.5rem}
+.card p{font-size:0.72rem;color:var(--dim);line-height:1.6}
+.apod-img{width:100%;max-height:350px;object-fit:cover;border-radius:8px;margin:0.5rem 0;background:#111}
+.nsrc{font-size:0.5rem;color:var(--accent2);font-family:'Orbitron';letter-spacing:1px;margin-top:0.5rem}
+.iss-box{background:rgba(0,212,255,0.04);border:1px solid var(--border);border-radius:12px;padding:1.2rem;margin:1rem 0;text-align:center}
+.iss-pos{font-family:'Orbitron';font-size:1rem;color:var(--accent)}
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.7rem;margin:0.8rem 0}
+.cc{background:rgba(0,212,255,0.03);border:1px solid var(--border);border-radius:9px;padding:0.9rem;cursor:pointer;transition:all 0.3s}
+.cc:hover{border-color:var(--accent);transform:translateY(-2px)}.cc .ci{font-size:1.5rem;margin-bottom:0.4rem}
+.cc h3{font-size:0.75rem;font-family:'Orbitron';margin-bottom:0.15rem}.cc p{font-size:0.68rem;color:var(--dim);line-height:1.5}
+.cc .ex{display:none;margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid var(--border);font-size:0.68rem;color:var(--dim);line-height:1.6}.cc.open .ex{display:block}
+.footer{text-align:center;padding:2rem 1rem;border-top:1px solid var(--border);margin-top:2rem}
+.footer p{font-size:0.55rem;color:var(--dim);line-height:1.8}.footer a{color:var(--accent);text-decoration:none}
+.back-btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;background:rgba(0,212,255,0.08);border:1px solid var(--border);border-radius:20px;color:var(--accent);font-family:'Orbitron';font-size:0.62rem;cursor:pointer;margin-bottom:1rem;text-decoration:none;transition:all 0.3s}
+.back-btn:hover{background:rgba(0,212,255,0.15);border-color:var(--accent)}
+
+/* Subtle background graphics */
+.bg-deco{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bg-deco .bo{position:absolute;opacity:0.06;font-size:2rem;left:0;animation:bgDrift linear infinite;animation-fill-mode:backwards}
+@keyframes bgDrift{0%{transform:translateX(-8vw) translateY(0) rotate(0)}100%{transform:translateX(108vw) translateY(-20px) rotate(360deg)}}
+@keyframes bgDriftR{0%{transform:translateX(108vw) translateY(0) rotate(0)}100%{transform:translateX(-8vw) translateY(15px) rotate(-360deg)}}
+.bg-star{position:absolute;background:#fff;border-radius:50%;opacity:0.15;animation:twk linear infinite}
+@keyframes twk{0%,100%{opacity:0.05}50%{opacity:0.25}}
+.ev-bar{display:flex;flex-wrap:wrap;gap:0.35rem;margin:0.5rem 0}
+.ev-chip{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--dim);padding:0.22rem 0.6rem;border-radius:14px;font-size:0.62rem;cursor:pointer;font-family:'Inter'}
+.ev-chip.on{background:rgba(0,212,255,0.14);color:var(--accent);border-color:var(--accent)}
+#evMap{height:420px;border-radius:10px;border:1px solid var(--border);background:#0a1224;margin-top:0.5rem}
+.ev-list{max-height:220px;overflow:auto;margin-top:0.6rem}
+.ev-row{display:flex;gap:0.5rem;align-items:center;padding:0.3rem 0;border-bottom:1px solid var(--border);font-size:0.68rem;cursor:pointer}
+.ev-row:hover{color:var(--accent)}
+.ev-dot{width:10px;height:10px;border-radius:50%;flex:none}
+.ev-count{font-family:'Orbitron';font-size:1.4rem;color:var(--accent)}
+</style><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<link rel="stylesheet" href="css/aq.css" />
+<link rel="stylesheet" href="css/chatbot.css" />
+</head><body>
+<script src="js/seed-data.js"></script><script src="js/mock-api.js"></script><script src="js/aq-common.js"></script>
+<div class="bg-deco" id="bgDeco">
+<div class="bo" style="top:15%;animation:bgDrift 50s linear infinite;animation-delay:-5s">🚀</div>
+<div class="bo" style="top:60%;animation:bgDriftR 65s linear infinite;animation-delay:-30s">🛰️</div>
+<div class="bo" style="top:35%;animation:bgDrift 70s linear infinite;animation-delay:-45s">🪐</div>
+<div class="bo" style="top:80%;animation:bgDriftR 55s linear infinite;animation-delay:-15s">☄️</div>
+<div class="bo" style="top:25%;animation:bgDrift 80s linear infinite;animation-delay:-60s">🌙</div>
+<div class="bo" style="top:70%;animation:bgDriftR 75s linear infinite;animation-delay:-20s">⭐</div>
+</div>
+<script>(function(){var d=document.getElementById('bgDeco');if(!d)return;for(var i=0;i<60;i++){var s=document.createElement('div');s.className='bg-star';var sz=Math.random()*2+0.5;s.style.width=sz+'px';s.style.height=sz+'px';s.style.top=Math.random()*100+'%';s.style.left=Math.random()*100+'%';s.style.animationDuration=(2+Math.random()*4)+'s';s.style.animationDelay=Math.random()*3+'s';d.appendChild(s)}})();</script>
+
+<nav class="nav"><a href="index.html" class="logo">Astro<span>Quest</span></a>
+<div class="navr"><a href="explore.html" class="nb">Solar System</a><a href="deepspace.html" class="nb">Deep Space</a><a href="rocket.html" class="nb">Rocket Lab</a><a href="budget.html" class="nb">Budget</a>
+<a href="nasa-live.html" class="nb on">NASA Live</a><a href="quiz.html" class="nb">Quiz</a><a href="research.html" class="nb">Research</a><a href="library.html" class="nb">Library</a><a href="datasets.html" class="nb">Datasets</a><span id="aqNavAuth"></span></div></nav>
+<div class="main">
+<a href="javascript:history.back()" class="back-btn">← Back</a>
+<h2 class="stl">🛰️ NASA Live Data</h2>
+<p style="text-align:center;font-size:0.72rem;color:var(--dim);margin-bottom:1rem"><span class="live-dot"></span> Auto-updates on every page refresh · NASA Open APIs</p>
+
+<div class="card"><h3>🌅 Astronomy Picture of the Day</h3><div id="apod"><p>Loading...</p></div><p class="nsrc">Source: NASA APOD API</p></div>
+<div class="card"><h3>☄️ Near-Earth Objects (Today)</h3><div id="neo"><p>Loading...</p></div><p class="nsrc">Source: NASA NeoWs API</p></div>
+<div class="card"><h3>🔴 Latest Mars Rover Photos</h3><div id="mars"><p>Loading...</p></div><p class="nsrc">Source: NASA Mars Rover Photos API</p></div>
+<div class="iss-box"><h3 style="font-size:0.75rem;color:var(--accent);margin-bottom:0.5rem">🛰️ ISS Position</h3><div id="iss"><p style="color:var(--dim)">Loading...</p></div><p class="nsrc" style="margin-top:0.5rem">Source: Open Notify API</p></div>
+
+<div class="card"><h3>🌍 Earth Right Now — Natural Events</h3>
+<p><span class="ev-count" id="evCount">…</span> <span id="evCountTxt">open events being tracked by NASA</span></p>
+<div class="ev-bar" id="evFilters"></div>
+<div class="ev-bar"><button class="ev-chip" id="evBay" type="button">📍 Bay of Bengal</button></div>
+<div id="evMap"></div>
+<div class="ev-list" id="evList"></div>
+<p class="nsrc">Source: NASA EONET (Earth Observatory Natural Event Tracker)</p></div>
+
+<div class="card"><h3>🌍 Space Centers</h3><div class="cg">
+<div class="cc" onclick="this.classList.toggle('open')"><div class="ci">🇺🇸</div><h3>Kennedy Space Center</h3><p>Florida — NASA primary launch</p><div class="ex">LC-39: Apollo, Shuttle, SLS/Artemis, SpaceX. 1.5M+ visitors/yr.</div></div>
+<div class="cc" onclick="this.classList.toggle('open')"><div class="ci">🇰🇿</div><h3>Baikonur</h3><p>Kazakhstan — world's first spaceport</p><div class="ex">Since 1957. Sputnik, Gagarin, Soyuz. Leased by Russia.</div></div>
+<div class="cc" onclick="this.classList.toggle('open')"><div class="ci">🇫🇷</div><h3>Kourou (CSG)</h3><p>French Guiana — ESA launch site</p><div class="ex">5°N equator. Ariane 5/6, Vega. JWST launched Dec 2021.</div></div>
+<div class="cc" onclick="this.classList.toggle('open')"><div class="ci">🇨🇳</div><h3>Wenchang</h3><p>Hainan, China — newest</p><div class="ex">Long March 5/7/8. CSS modules, Chang'e, Tianwen.</div></div>
+<div class="cc" onclick="this.classList.toggle('open')"><div class="ci">🇮🇳</div><h3>Sriharikota (SDSC)</h3><p>India — ISRO hub</p><div class="ex">PSLV, GSLV. Chandrayaan, Mangalyaan, Gaganyaan.</div></div>
+<div class="cc" onclick="this.classList.toggle('open')"><div class="ci">🇯🇵</div><h3>Tanegashima</h3><p>Japan — JAXA</p><div class="ex">H-IIA/H3. Hayabusa, SLIM. "Most beautiful launch site."</div></div>
+</div></div>
+
+<div class="card"><h3>🚀 Active Missions</h3><div class="cg">
+<div class="cc" onclick="this.classList.toggle('open')"><div class="ci">🛸</div><h3>Voyager 1</h3><p>Farthest object — 24B+ km</p><div class="ex">Launched 1977. Interstellar since 2012. Golden Record. RTG power until ~2025.</div></div>
+<div class="cc" onclick="this.classList.toggle('open')"><div class="ci">🔴</div><h3>Perseverance</h3><p>Mars since Feb 2021</p><div class="ex">Jezero Crater. Ingenuity: 72+ flights. MOXIE: CO₂→O₂ proven.</div></div>
+<div class="cc" onclick="this.classList.toggle('open')"><div class="ci">☀️</div><h3>Parker Solar Probe</h3><p>635,266 km/h — fastest ever</p><div class="ex">Touched corona 2021. Heat shield: 1,377°C.</div></div>
+<div class="cc" onclick="this.classList.toggle('open')"><div class="ci">🌌</div><h3>JWST</h3><p>L2 orbit, 1.5M km</p><div class="ex">6.5m mirror. Sees 13B+ years. Exoplanet atmospheres. $10B.</div></div>
+</div></div>
+
+<div class="footer"><p>AstroQuest · Team Astro_W1 · NASA Space Apps 2026<br><a href="https://api.nasa.gov" target="_blank">api.nasa.gov</a> · Free API key · 1000 req/hr</p></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function(){
+  const COL={wildfires:'#ff6b35',severeStorms:'#7b61ff',floods:'#00d4ff',volcanoes:'#ff3d57',earthquakes:'#ffd600',drought:'#c9a227',dustHaze:'#b08968',landslides:'#8d6e63',seaLakeIce:'#9be7ff',snow:'#e0e8f8',tempExtremes:'#ff9100',waterColor:'#26c6da',manmade:'#9e9e9e'};
+  const BAY={s:5,n:23,w:80,e:100}; // approx Bay of Bengal box
+  let map,layer,events=[],cat='all',bay=false;
+
+  const pt=g=>{ // [lat,lon] from a Point or the first vertex of a Polygon
+    const c=g.coordinates; if(!c) return null;
+    const p=g.type==='Polygon'?c[0][0]:c; return (p&&p.length>=2)?[p[1],p[0]]:null};
+  const inBay=ll=>ll&&ll[0]>=BAY.s&&ll[0]<=BAY.n&&ll[1]>=BAY.w&&ll[1]<=BAY.e;
+
+  function norm(e){
+    const geos=(e.geometry||[]).map(g=>({ll:pt(g),date:g.date,mag:g.magnitudeValue,unit:g.magnitudeUnit})).filter(g=>g.ll);
+    if(!geos.length) return null;
+    const c=(e.categories&&e.categories[0])||{id:'other',title:'Other'};
+    return {id:e.id,title:e.title,link:e.link,cat:c.id,catTitle:c.title,geos,last:geos[geos.length-1]};
+  }
+
+  function draw(){
+    layer.clearLayers();
+    const shown=events.filter(e=>(cat==='all'||e.cat===cat)&&(!bay||e.geos.some(g=>inBay(g.ll))));
+    const list=document.getElementById('evList');list.innerHTML='';
+    const pts=[];
+    shown.forEach(e=>{
+      const col=COL[e.cat]||'#9e9e9e';
+      const m=L.circleMarker(e.last.ll,{radius:7,color:col,fillColor:col,fillOpacity:0.75,weight:1}).addTo(layer);
+      const d=e.last.date?new Date(e.last.date).toUTCString().slice(0,16):'';
+      const mag=e.last.mag!=null?`<br>${esc(e.last.mag)} ${esc(e.last.unit||'')}`:'';
+      m.bindPopup(`<strong>${esc(e.title)}</strong><br>${esc(e.catTitle)} · ${esc(d)}${mag}<br><a href="${esc(e.link)}" target="_blank" rel="noopener">NASA source</a>`);
+      pts.push(e.last.ll);
+      // storm track: line through the points EONET gives over time
+      if(e.cat==='severeStorms'&&e.geos.length>1)
+        L.polyline(e.geos.map(g=>g.ll),{color:col,weight:2,opacity:0.8,dashArray:'4 4'}).addTo(layer);
+      const row=document.createElement('div');row.className='ev-row';
+      row.innerHTML=`<span class="ev-dot" style="background:${col}"></span><span><strong>${esc(e.title)}</strong> · ${esc(e.catTitle)}</span>`;
+      row.onclick=()=>{map.setView(e.last.ll,5);m.openPopup()};
+      list.appendChild(row);
+    });
+    if(!shown.length) list.innerHTML='<p>No events for this filter.</p>';
+    if(bay) map.fitBounds([[BAY.s,BAY.w],[BAY.n,BAY.e]]);
+    else if(pts.length&&cat!=='all') map.fitBounds(pts,{maxZoom:6,padding:[20,20]});
+    else map.setView([20,60],2);
+  }
+
+  function filters(){
+    const cats={};events.forEach(e=>cats[e.cat]=e.catTitle);
+    const box=document.getElementById('evFilters');
+    box.innerHTML='<button class="ev-chip on" data-c="all" type="button">All</button>'+
+      Object.keys(cats).map(k=>`<button class="ev-chip" data-c="${esc(k)}" type="button">${esc(cats[k])}</button>`).join('');
+    box.onclick=ev=>{const b=ev.target.closest('.ev-chip');if(!b)return;
+      cat=b.dataset.c;box.querySelectorAll('.ev-chip').forEach(x=>x.classList.toggle('on',x===b));draw()};
+  }
+
+  async function init(){
+    const cnt=document.getElementById('evCount');
+    try{
+      map=L.map('evMap',{worldCopyJump:true}).setView([20,60],2);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:8,attribution:'&copy; OpenStreetMap'}).addTo(map);
+      layer=L.layerGroup().addTo(map);
+      const d=await aqFetch('/api/nasa/events').then(r=>r.json());
+      events=(d.events||[]).map(norm).filter(Boolean);
+      cnt.textContent=events.length;
+      filters();draw();
+      document.getElementById('evBay').onclick=function(){bay=!bay;this.classList.toggle('on',bay);draw()};
+    }catch(e){
+      cnt.textContent='–';
+      document.getElementById('evList').innerHTML='<p>Live events load online (NASA EONET). Try again later.</p>';
+    }
+  }
+  init();
+})();
+</script>
+<script>
+async function load(){
+  try{const r=await fetch('/api/nasa/apod');const d=await r.json();
+    document.getElementById('apod').innerHTML=`${d.media_type==='image'?`<img class="apod-img" src="${d.url}" alt="${d.title}" onerror="this.style.display='none'">`:''}
+    <h4 style="font-size:0.85rem;margin:0.3rem 0">${d.title}</h4><p>${(d.explanation||'').substring(0,280)}...</p><p style="font-size:0.6rem;color:var(--accent);margin-top:0.3rem">Date: ${d.date}</p>`}
+  catch(e){document.getElementById('apod').innerHTML='<p>Loads when hosted online. Uses NASA APOD API (api.nasa.gov).</p>'}
+  try{const today=new Date().toISOString().slice(0,10);const r=await fetch('/api/nasa/neo?date='+today);
+    const d=await r.json();const neos=d.near_earth_objects?.[today]||[];
+    document.getElementById('neo').innerHTML=neos.length?`<p style="color:var(--warn);margin-bottom:0.5rem">${neos.length} objects today</p>${neos.slice(0,5).map(n=>`<div style="padding:0.3rem 0;border-bottom:1px solid var(--border);font-size:0.7rem"><strong>${n.name}</strong> — ${Math.round(n.estimated_diameter?.meters?.estimated_diameter_max||0)}m — ${Math.round((n.close_approach_data?.[0]?.miss_distance?.kilometers||0)/1000)}K km</div>`).join('')}`:'No data.'}
+  catch(e){document.getElementById('neo').innerHTML='<p>NEO data loads online. Tracks asteroids near Earth daily.</p>'}
+  try{const r=await fetch('/api/nasa/mars-photos');
+    const d=await r.json();const ph=d.latest_photos||[];
+    document.getElementById('mars').innerHTML=ph.length?`<div style="display:flex;flex-wrap:wrap;gap:0.3rem">${ph.slice(0,4).map(p=>`<img src="${p.img_src}" style="width:48%;height:100px;object-fit:cover;border-radius:6px" onerror="this.style.display='none'">`).join('')}</div><p style="font-size:0.65rem;color:var(--dim);margin-top:0.3rem">Sol ${ph[0]?.sol} · ${ph[0]?.earth_date} · ${ph[0]?.camera?.full_name}</p>`:'No photos.'}
+  catch(e){document.getElementById('mars').innerHTML='<p>Mars photos load online. Perseverance latest camera images.</p>'}
+  try{const r=await fetch('/api/nasa/iss');const d=await r.json();
+    document.getElementById('iss').innerHTML=`<div class="iss-pos">Lat: ${parseFloat(d.iss_position.latitude).toFixed(2)}° · Lon: ${parseFloat(d.iss_position.longitude).toFixed(2)}°</div><p style="font-size:0.65rem;color:var(--dim);margin-top:0.3rem">Alt: ~408 km · Speed: 28,000 km/h · Orbit: 92 min</p>`}
+  catch(e){document.getElementById('iss').innerHTML='<p>ISS at ~408 km, 28,000 km/h, orbits every 92 min.</p>'}}
+load();
+</script><script src="js/chatbot.js"></script>
+</body></html>
